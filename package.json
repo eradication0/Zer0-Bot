@@ -1,0 +1,21 @@
+{
+  "devDependencies": {
+    "fs-extra": "^0.30.0",
+    "jsdoc-parse": "^1.2.0",
+    "eslint": "^3.4.0"
+  },
+  "optionalDependencies": {
+    "node-opus": "^0.1.13"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^9.0.2",
+    "fs": "0.0.1-security",
+    "git": "^0.1.5",
+    "jsonfile": "^2.4.0",
+    "request": "^2.74.0",
+    "twitter": "^1.4.0"
+  }
+}
