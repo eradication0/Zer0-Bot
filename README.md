@@ -12,9 +12,11 @@ Over Swiss Bot for Discord using Node.js
 * -comp <BattleTag>
 * -quickraw <BattleTag>
 * -compraw <BattleTag>
+
 ### RPG
 * -startrpg
 * -profile
 * -daily
+
 ### Dev Stuff
 * .eval
