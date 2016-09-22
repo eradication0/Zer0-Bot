@@ -1,18 +1,21 @@
 console.log ('<== STARTING BOT ==>');
 
-const Discord = require('discord.js');
+const Discord = require('discord.js'); //discord
+const request = require('request'); //jason request from website
+const Twitter = require('twitter'); //twitter api
+const fs = require('fs'); //filesystem
+const jsonfile = require('jsonfile'); //json write/reload
+const rand = require('random-int'); //number randomizer finally intuitive
+const cronJob = require('cron').CronJob; //scheduler
+
+console.log ('node modules √');
+
 const bot = new Discord.Client();
-const request = require('request');
-const Twitter = require('twitter');
-const fs = require('fs');
-const jsonfile = require('jsonfile');
-const cred = require("./cred.json");
-const rand = require('random-int');
-var dbfile = './users.json';
-var db = require("./users.json");
-var date = new Date();
+const dbpath = './db.json';
 
 
+var db = require("./db.json");
+var cred = require("./cred.json");
 var client = new Twitter({
 	consumer_key: cred.consumer,
 	consumer_secret: cred.consumersecret,
@@ -20,7 +23,7 @@ var client = new Twitter({
 	access_token_secret: cred.twittertokensecret
 });
 
-console.log ('const √');
+console.log ('variables √');
 
 
 bot.on('ready', () => {
@@ -31,13 +34,11 @@ bot.on('ready', () => {
 
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return;
-
 	if (message.content.startsWith('-name'))
 	{
 		let m = `Hello ${message.content.slice(6)}`;
 		message.channel.sendMessage(m);
 	}
-
 	if (message.content.startsWith('.eval') && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760') {
 		try {
 			const com = eval(message.content.split(" ").slice(1).join(" "));
@@ -48,7 +49,6 @@ bot.on('message', message => {
 	}
 
 	//OVERWATCH -------------------------------------------
-
 	if (message.content.startsWith('-comp'))
 	{
 		let battletag = message.content.slice(7)
@@ -113,7 +113,7 @@ bot.on('message', message => {
 				m += `Damage: ${body.DamageDone}\n`
 				m += `Heal: ${body.HealingDone}\n`
 				m += `Medals: ${body.Medals}\n`
-				m += `-Gold Medals: ${body.MedalsGold}\n`
+				m += `-credits Medals: ${body.Medalscredits}\n`
 				m += `-Silver Medals: ${body.MedalsSilver}\n`
 				m += `-Bronze Medals: ${body.MedalsBronze}\n`
 				m += '```'
@@ -161,7 +161,6 @@ bot.on('message', message => {
 	}
 
 	//TWITTER ----------------------------------------------
-
 	if (message.content.startsWith('-tweet') && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760'){
 		let tweetbody = message.content.slice(7);
 		if (tweetbody.length <= 140) {
@@ -178,56 +177,81 @@ bot.on('message', message => {
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return;
 
+	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760'){
+		for(i in db){
+			db[i].daily = 0;
+		}
+		jsonfile.writeFile(dbpath, db);
+	}
+
+
+	// Daily reset
+	var dailyreset = new cronJob({
+		cronTime: '* * * * 12 *',
+		onTick: function reset(){
+			for(i in db){
+				db[i].daily = 0;
+				console.log("1 daily reset");
+			}
+			console.log("reseted the db")
+			jsonfile.writeFile(dbpath, db);
+		},
+		start: false,
+		timeZone: "Europe/Berlin"
+	});
+	dailyreset.start();
+
 	// daily
 	if (message.content === '-daily'){
-		if (db[message.author.id]){
+		if (db[message.author.id]) {
 			if (db[message.author.id].daily === 0) {
 				let dailyexp = rand(100, 1000);
-				let dailygold = rand(100, 1000);
+				let dailycredits = rand(100, 1000);
 				db[message.author.id].exp += dailyexp;
-				db[message.author.id].gold += dailygold;
+				db[message.author.id].credits += dailycredits;
 				db[message.author.id].daily = 1;
-				jsonfile.writeFile(dbfile, db);
+				jsonfile.writeFile(dbpath, db);
 				let m = "```xl\n";
 				m+= `"|---------Daily reward!---------|"\n`;
-				m+= `||Gold: +${dailygold}\n`;
+				m+= `||Credits: +${dailycredits}\n`;
 				m+= `||Exp: +${dailyexp}\n`;
 				m+= `"|-------------------------------|"`;
 				m+= "```";
 				message.channel.sendMessage(m);
 			} else {
-				message.channel.sendMessage("You already collected your dailys!");
+				message.channel.sendMessage("You already collected your dailies!");
 			}
 		} else {
-			message.channel.sendMessage("No Profile found");
+			message.channel.sendMessage("No profile found. Use ``-create`` to create one.");
 		}
 	}
-		// SHOW CURRENT PROFILE
-		if (message.content === '-profile'){
-			if (db[message.author.id]){
-				let gold = db[message.author.id].gold;
-				let exp = db[message.author.id].exp;
-				let m = "```xl\n";
-				m+= `"|---------PROFILE---------|"\n`;
-				m+= `||Gold: ${gold}\n`;
-				m+= `||Exp: ${exp}\n`;
-				m+= `"|-------------------------|"`;
-				m+= "```";
-				message.channel.sendMessage(m);
-			} else {
-				message.channel.sendMessage("No Profile found");
-			}
+	// SHOW CURRENT PROFILE
+	if (message.content === '-profile'){
+		if (db[message.author.id]) {
+			let credits = db[message.author.id].credits;
+			let exp = db[message.author.id].exp;
+			let m = "```xl\n";
+			m+= `"|---------PROFILE---------|"\n`;
+			m+= `||Credits: ${credits}\n`;
+			m+= `||Exp: ${exp}\n`;
+			m+= `"|-------------------------|"`;
+			m+= "```";
+			message.channel.sendMessage(m);
+		} else {
+			message.channel.sendMessage("No profile found. Use ``-create`` to create one.");
 		}
-		// CREATE NEW PROFILE
-		if (message.content === '-startrpg'){
-			if (db[message.author.id]){
-				message.channel.sendMessage("You already have a Profile");
-			} else {
-				db[message.author.id] = {"gold":0,"exp":0,"daily":0};
-				jsonfile.writeFile(dbfile, db);
-				message.channel.sendMessage("New Profile created!");
-			}
+	}
+	// CREATE NEW PROFILE
+	if (message.content === '-create'){
+		if (db[message.author.id]) {
+			message.channel.sendMessage("You already have a profile");
+		} else {
+			db[message.author.id] = {"credits":0,"exp":0,"daily":0};
+			jsonfile.writeFile(dbpath, db);
+			message.channel.sendMessage("New profile created!");
+			console.log ('new profile created!');
 		}
-	});
-	bot.login(cred.bottoken);
-	console.log ('login √');
+	}
+});
+bot.login(cred.bottoken);
+console.log ('login √');
