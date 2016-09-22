@@ -174,9 +174,26 @@ bot.on('message', message => {
 });
 
 // RPG ---------------------------------------------------------
+/*
+MATH DOKU-------------------
+<==EXP CURVE==>
+x = 10 * (1.5 ^ y)
+y = log(x/10) / log(1.5)
+--
+x = exp
+y = lvl
+--
+.eval Math.log(EXP / 10) / Math.log(1.5);
+.eval 10 * Math.pow(1.5, LVL);
+<== ///// ==>
+*/
+
+
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return;
 
+
+	///////////////////// FOR TESTING
 	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
 		for(i in db){
 			db[i].daily = 0;
@@ -186,12 +203,11 @@ bot.on('message', message => {
 	}
 
 	if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
-let dailyexp = rand(100, 1000);
-db[message.author.id].exp += dailyexp;
-message.channel.sendMessage(`added ${dailyexp} exp`);
+		let dailyexp = rand(100, 1000);
+		db[message.author.id].exp += dailyexp;
+		message.channel.sendMessage(`added ${dailyexp} exp`);
 	}
-
-
+	////////////////////////////////////
 
 	// Daily reset
 	var dailyreset = new cronJob({
@@ -232,6 +248,21 @@ message.channel.sendMessage(`added ${dailyexp} exp`);
 			message.channel.sendMessage("No profile found. Use ``-create`` to create one.");
 		}
 	}
+	// SHOW INVENTORY
+	if (message.content === '-inventory'){
+		if (db[message.author.id]) {
+			let m = '```xl\n'
+			m += `"|---------INVENTORY---------|"\n`
+			for(i in db[message.author.id].inventory){
+				m += ` > `
+				m += db[message.author.id].inventory[i];
+				m += `\n`
+			}
+			m += '"|---------------------------|"```'
+			message.channel.sendMessage(m);
+		}
+	}
+
 	// SHOW CURRENT PROFILE
 	if (message.content === '-profile'){
 		if (db[message.author.id]) {
