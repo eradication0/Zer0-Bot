@@ -195,11 +195,10 @@ message.channel.sendMessage(`added ${dailyexp} exp`);
 
 	// Daily reset
 	var dailyreset = new cronJob({
-		cronTime: '* * * * 12 *',
+		cronTime: '00 00 12 * * *',
 		onTick: function reset(){
 			for(i in db){
 				db[i].daily = 0;
-				console.log("1 daily reset");
 			}
 			console.log("reseted the db")
 			jsonfile.writeFile(dbpath, db);
