@@ -18,6 +18,6 @@
     "jsonfile": "^2.4.0",
     "random-int": "^1.0.0",
     "request": "^2.74.0",
-    "twitter": "^1.4.0",
+    "twitter": "^1.4.0"
   }
 }

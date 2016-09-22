@@ -177,12 +177,20 @@ bot.on('message', message => {
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return;
 
-	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760'){
+	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
 		for(i in db){
 			db[i].daily = 0;
 		}
 		jsonfile.writeFile(dbpath, db);
+		message.channel.sendMessage("daily reset!");
 	}
+
+	if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
+let dailyexp = rand(100, 1000);
+db[message.author.id].exp += dailyexp;
+message.channel.sendMessage(`added ${dailyexp} exp`);
+	}
+
 
 
 	// Daily reset
