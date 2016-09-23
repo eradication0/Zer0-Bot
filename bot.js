@@ -10,13 +10,16 @@ const cronJob = require('cron').CronJob //scheduler
 
 console.log ('node modules √')
 
-const bot = new Discord.Client()
 const dbpath = './db.json'
 const botpath = './bot.js'
+const newuser = {"credits":0,"exp":1,"daily":0,"inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}}
 
-var mtime = ''
+const bot = new Discord.Client()
+
 var db = require("./db.json")
 var cred = require("./cred.json")
+
+// twitter api setup
 var client = new Twitter({
 	consumer_key: cred.consumer,
 	consumer_secret: cred.consumersecret,
@@ -24,17 +27,34 @@ var client = new Twitter({
 	access_token_secret: cred.twittertokensecret
 })
 
+// Daily reset
+var dailyreset = new cronJob({
+	cronTime: '00 00 12 * * *',
+	onTick: function reset(){
+		for(i in db){
+			db[i].daily = 0
+		}
+		console.log("reseted the db")
+		jsonfile.writeFile(dbpath, db)
+	},
+	start: false,
+	timeZone: "Europe/Berlin"
+})
+dailyreset.start()
+
 console.log ('variables √')
 
 bot.on('ready', () => {
 	console.log('<== BOT STARTED ==>')
 })
 
-//DEBUG/ADMIN ---------------------------------------------
-
+//-----------------------------------
+// DEBUG/ADMIN
+//-----------------------------------
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return
 
+// EVAL
 	if (message.content.startsWith('.eval') && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760') {
 		try {
 			const com = eval(message.content.split(" ").slice(1).join(" "))
@@ -44,19 +64,29 @@ bot.on('message', message => {
 		}
 	}
 
-//OTHER TOOLS ---------------------------------------------------
+//-----------------------------------
+// OTHER STUFF
+//-----------------------------------
+
+// REMINDER
 if (message.content.startsWith("-reminder")){
 	let m = "Your Reminder:\n<https://calendar.google.com/calendar/render?action=TEMPLATE&text="
 	m += message.content.slice(10).replace(/\s/g,"+") + ">"
 	message.channel.sendMessage(m)
 }
 
+// NAME
 if (message.content.startsWith('-name'))
 {
 	let m = `Hello ${message.content.slice(6)}`
 	message.channel.sendMessage(m)
 }
-	//OVERWATCH -------------------------------------------
+
+//-----------------------------------
+// OVERWATCH
+//-----------------------------------
+
+// COMP PROFILE
 	if (message.content.startsWith('-comp'))
 	{
 		let battletag = message.content.slice(7)
@@ -93,6 +123,7 @@ if (message.content.startsWith('-name'))
 		})
 	}
 
+// QUICK PROFILE
 	if (message.content.startsWith('-quick'))
 	{
 		let battletag = message.content.slice(7)
@@ -130,6 +161,7 @@ if (message.content.startsWith('-name'))
 		})
 	}
 
+// QUICK PROFILE RAW
 	if (message.content.startsWith('-rawquick'))
 	{
 		let battletag = message.content.slice(10)
@@ -149,6 +181,7 @@ if (message.content.startsWith('-name'))
 		})
 	}
 
+// COMP PROFILE RAW
 	if (message.content.startsWith('-rawcomp'))
 	{
 		let battletag = message.content.slice(10)
@@ -168,7 +201,9 @@ if (message.content.startsWith('-name'))
 		})
 	}
 
-	//TWITTER ----------------------------------------------
+//-----------------------------------
+// TWITTER
+//-----------------------------------
 	if (message.content.startsWith('-tweet') && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760'){
 		let tweetbody = message.content.slice(7)
 		if (tweetbody.length <= 140) {
@@ -179,36 +214,34 @@ if (message.content.startsWith('-name'))
 			message.channel.sendMessage("Your tweet is longer than 140 letters. Pls shorten your tweet.")
 		}
 	}
-})
 
-// RPG ---------------------------------------------------------
+
 /*
-<============================= DOKUMENTATION
-
-<==EXP CURVE==>
-x = 10 * (1.5 ^ y)
-y = log(x/10) / log(1.5)
---
+## EXP CURVE ########################
+EQUASIONS
+x = 1 * (3 ^ y)
+y = log(x/1) / log(3)
+DEFINITION
 x = exp
 y = lvl
---
+COMMANDS
 .eval Math.log(EXP / 10) / Math.log(1.5)
 .eval 10 * Math.pow(1.5, LVL)
+### END CURVE #######################
 
-<==Message Template==>
+## MESSSAGE TEMPLATE ################
 let m = "```xl\n"
 m+= `"|---------"---------|"\n`
 m+= ` > \n`
 m+= ` > \n`
 m+= `"|-------------------|"`
 m+= "```"
-
-
+## END MESSAGE TEMPLATE #############
 */
 
-
-bot.on('message', message => {
-	if (message.author.id === bot.user.id) return
+//-----------------------------------
+// RPG
+//-----------------------------------
 
 	if (message.content === '-rpg') {
 		let m = "```xl\n"
@@ -228,7 +261,8 @@ bot.on('message', message => {
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
-	///////////////////// FOR TESTING
+
+// HARD RESET (TESTING ONLY)
 	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
 		for(i in db){
 			db[i].daily = 0
@@ -237,29 +271,14 @@ bot.on('message', message => {
 		message.channel.sendMessage("daily reset!")
 	}
 
+// FREE EXP (TESTING ONLY)
 	if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
 		let dailyexp = rand(100, 1000)
 		db[message.author.id].exp += dailyexp
 		message.channel.sendMessage(`added ${dailyexp} exp`)
 	}
-	////////////////////////////////////
 
-	// Daily reset
-	var dailyreset = new cronJob({
-		cronTime: '00 00 12 * * *',
-		onTick: function reset(){
-			for(i in db){
-				db[i].daily = 0
-			}
-			console.log("reseted the db")
-			jsonfile.writeFile(dbpath, db)
-		},
-		start: false,
-		timeZone: "Europe/Berlin"
-	})
-	dailyreset.start()
-
-	// daily
+// DAILY
 	if (message.content === '-daily' || message.content === '-dly'){
 		if (db[message.author.id]) {
 			if (db[message.author.id].daily === 0) {
@@ -283,7 +302,8 @@ bot.on('message', message => {
 			message.channel.sendMessage("No profile found. Use ``-create`` to create one.")
 		}
 	}
-	// SHOW INVENTORY
+
+// SHOW INVENTORY
 	if (message.content === '-inventory' || message.content === '-inv' ){
 		if (db[message.author.id]) {
 			let m = '```xl\n'
@@ -301,12 +321,14 @@ bot.on('message', message => {
 	// SHOW CURRENT PROFILE
 	if (message.content === '-profile' || message.content === '-prf'){
 		if (db[message.author.id]) {
-			let credits = db[message.author.id].credits
+			let crd = db[message.author.id].credits
 			let exp = db[message.author.id].exp
+			let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
 			let m = "```xl\n"
 			m+= `"|---------PROFILE---------|"\n`
-			m+= ` > Credits: ${credits}\n`
+			m+= ` > Credits: ${crd}\n`
 			m+= ` > Exp: ${exp}\n`
+			m+= ` > Level: ${lvl}\n`
 			m+= `"|-------------------------|"`
 			m+= "```"
 			message.channel.sendMessage(m)
@@ -314,12 +336,13 @@ bot.on('message', message => {
 			message.channel.sendMessage("No profile found. Use ``-create`` to create one.")
 		}
 	}
+
 	// CREATE NEW PROFILE
 	if (message.content === '-create' || message.content === '-crt'){
 		if (db[message.author.id]) {
 			message.channel.sendMessage("You already have a profile")
 		} else {
-			db[message.author.id] = {"credits":0,"exp":0,"daily":0}
+			db[message.author.id] = newuser
 			jsonfile.writeFile(dbpath, db)
 			message.channel.sendMessage("New profile created!")
 			console.log ('new profile created!')
