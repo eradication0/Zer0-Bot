@@ -12,8 +12,9 @@ console.log ('node modules √')
 
 const bot = new Discord.Client()
 const dbpath = './db.json'
+const botpath = './bot.js'
 
-
+var mtime = ''
 var db = require("./db.json")
 var cred = require("./cred.json")
 var client = new Twitter({
@@ -24,7 +25,6 @@ var client = new Twitter({
 })
 
 console.log ('variables √')
-
 
 bot.on('ready', () => {
 	console.log('<== BOT STARTED ==>')
@@ -46,10 +46,11 @@ bot.on('message', message => {
 
 //OTHER TOOLS ---------------------------------------------------
 if (message.content.startsWith("-reminder")){
-	let m = "https://calendar.google.com/calendar/render?action=TEMPLATE&text="
-	m += message.content.slice(10).replace(/\s/g,"+")
+	let m = "Your Reminder:\n<https://calendar.google.com/calendar/render?action=TEMPLATE&text="
+	m += message.content.slice(10).replace(/\s/g,"+") + ">"
 	message.channel.sendMessage(m)
 }
+
 if (message.content.startsWith('-name'))
 {
 	let m = `Hello ${message.content.slice(6)}`
@@ -326,17 +327,6 @@ bot.on('message', message => {
 	}
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
 bot.login(cred.bottoken)
 console.log ('login √')
+console.log ('Last save: ' + fs.statSync(botpath).mtime)
