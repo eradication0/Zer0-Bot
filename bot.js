@@ -209,15 +209,16 @@ bot.on('message', message => {
 		m+= ` > this is the help page\n`
 		m+= ` > \n`
 		m+= ` > Commands:\n`
-		m+= ` > -create // "start your adventure!"\n`
-		m+= ` > -profile, -prf // "checks your profile"\n`
-		m+= ` > -inventory, -inv // "shows your inventory"\n`
-		m+= ` > -daily, -dly // "collect your daily rewards"\n`
+		m+= ` > -create, -crt "start your adventure!"\n`
+		m+= ` > -profile, -prf "checks your profile"\n`
+		m+= ` > -inventory, -inv "shows your inventory"\n`
+		m+= ` > -daily, -dly "collect your daily rewards"\n`
 		m+= ` > \n`
 		m+= ` > Infos:\n`
-		m+= ` > Daily reset is everyday at 12:00 UTC+01:00\n`
+		m+= ` > daily reset is everyday at 12:00 UTC+01:00\n`
 		m+= `"|--------------------------|"`
 		m+= "```"
+		message.channel.sendMessage(m)
 	}
 	///////////////////// FOR TESTING
 	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
@@ -306,7 +307,7 @@ bot.on('message', message => {
 		}
 	}
 	// CREATE NEW PROFILE
-	if (message.content === '-create'){
+	if (message.content === '-create' || message.content === '-crt'){
 		if (db[message.author.id]) {
 			message.channel.sendMessage("You already have a profile")
 		} else {
