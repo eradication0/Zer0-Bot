@@ -34,11 +34,7 @@ bot.on('ready', () => {
 
 bot.on('message', message => {
 	if (message.author.id === bot.user.id) return
-	if (message.content.startsWith('-name'))
-	{
-		let m = `Hello ${message.content.slice(6)}`
-		message.channel.sendMessage(m)
-	}
+
 	if (message.content.startsWith('.eval') && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760') {
 		try {
 			const com = eval(message.content.split(" ").slice(1).join(" "))
@@ -48,6 +44,17 @@ bot.on('message', message => {
 		}
 	}
 
+//OTHER TOOLS ---------------------------------------------------
+if (message.content.startsWith("-reminder")){
+	let m = "https://calendar.google.com/calendar/render?action=TEMPLATE&text="
+	m += message.content.slice(10).replace(/\s/g,"+")
+	message.channel.sendMessage(m)
+}
+if (message.content.startsWith('-name'))
+{
+	let m = `Hello ${message.content.slice(6)}`
+	message.channel.sendMessage(m)
+}
 	//OVERWATCH -------------------------------------------
 	if (message.content.startsWith('-comp'))
 	{
@@ -318,5 +325,18 @@ bot.on('message', message => {
 		}
 	}
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
 bot.login(cred.bottoken)
 console.log ('login √')
