@@ -13,7 +13,7 @@ console.log ('node modules √')
 const dbpath = './db.json'
 const clspath = './classes.json'
 const botpath = './bot.js'
-const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","inventory":{"1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","10":""}}
+const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}}
 
 const bot = new Discord.Client()
 
