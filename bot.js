@@ -17,7 +17,15 @@ const newuser = {"credits":0,"exp":1,"daily":0,"class":"","inventory":{"1":"","2
 
 const bot = new Discord.Client()
 
-// function
+// FUNCTION
+function profilecheck(authorid, msg) {
+	if(db[authorid]){
+		return true
+	} else {
+		msg.channel.sendMessage("you no profile")
+		return false
+	}
+}
 
 //GLOBAL VARS
 var db = require("./db.json")
@@ -284,116 +292,109 @@ bot.on('message', message => {
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
-})
 
-bot.on('message', message => {
-	if (message.author.id === bot.user.id) return
+// FOR USERS WITH PROFILES!
 
-		// HARD RESET (TESTING ONLY)
-		if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
-			for(i in db){
-				db[i].daily = 0
-			}
-			message.channel.sendMessage("daily reset!")
+	// HARD RESET (TESTING ONLY)
+	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
+		for(i in db){
+			db[i].daily = 0
 		}
+		message.channel.sendMessage("daily reset!")
+	}
 
-		// FREE EXP (TESTING ONLY)
-		if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
+	// FREE EXP (TESTING ONLY)
+	if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
+		let dailyexp = rand(100, 1000)
+		db[message.author.id].exp += dailyexp
+		message.channel.sendMessage(`added ${dailyexp} exp`)
+	}
+
+	// DAILY
+	if (message.content === '-daily' || message.content === '-dly'){
+		if (!profilecheck(message.author.id, message)) return;
+		if (db[message.author.id].daily === 0) {
 			let dailyexp = rand(100, 1000)
+			let dailycredits = rand(100, 1000)
 			db[message.author.id].exp += dailyexp
-			message.channel.sendMessage(`added ${dailyexp} exp`)
-		}
-
-		// DAILY
-		if (message.content === '-daily' || message.content === '-dly'){
-			if (db[message.author.id].daily === 0) {
-				let dailyexp = rand(100, 1000)
-				let dailycredits = rand(100, 1000)
-				db[message.author.id].exp += dailyexp
-				db[message.author.id].credits += dailycredits
-				db[message.author.id].daily = 1
-				jsonfile.writeFile(dbpath, db)
-				let m = "```xl\n"
-				m+= `"|---------Daily reward!---------|"\n`
-				m+= ` > Credits: +${dailycredits}\n`
-				m+= ` > Exp: +${dailyexp}\n`
-				m+= `"|-------------------------------|"`
-				m+= "```"
-				message.channel.sendMessage(m)
-			} else {
-				message.channel.sendMessage("You already collected your dailies!")
-			}
-		}
-
-		// SHOW INVENTORY
-		if (message.content === '-inventory' || message.content === '-inv' ){
-			let m = '```xl\n'
-			m += `"|---------INVENTORY---------|"\n`
-			for(i in db[message.author.id].inventory){
-				m += ` > `
-				m += db[message.author.id].inventory[i]
-				m += `\n`
-			}
-			m += '"|---------------------------|"```'
-			message.channel.sendMessage(m)
-		}
-
-		// SHOW CURRENT PROFILE
-		if (message.content === '-profile' || message.content === '-prf'){
-			let crd = db[message.author.id].credits
-			let exp = db[message.author.id].exp
-			let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
-			let ncls = db[message.author.id].class
+			db[message.author.id].credits += dailycredits
+			db[message.author.id].daily = 1
+			jsonfile.writeFile(dbpath, db)
 			let m = "```xl\n"
-			m+= `"|---------PROFILE---------|"\n`
-			m+= ` > Class: ${ncls}\n`
-			m+= ` > Level: ${lvl}\n`
-			m+= ` > Credits: ${crd}\n`
-			m+= ` > Exp: ${exp}\n`
-
-			m+= `"|-------------------------|"`
+			m+= `"|---------Daily reward!---------|"\n`
+			m+= ` > Credits: +${dailycredits}\n`
+			m+= ` > Exp: +${dailyexp}\n`
+			m+= `"|-------------------------------|"`
 			m+= "```"
 			message.channel.sendMessage(m)
+		} else {
+			message.channel.sendMessage("You already collected your dailies!")
 		}
+	}
 
-		// SHOW CURRENT PROFILE
-		if (message.content === '-class' || message.content === '-cls'){
-			profilecheck(message)
-			let m = "```xl\n"
-			m+= `"|---------CLASS---------|"\n`
-			m+= ` > availiable classes:\n`
-			m+= ` > Tank      // Low Damage,  High Health. Bonus: Armor\n`
-			m+= ` > Offensive // High Damage, Mid Health.  Bonus: Damage\n`
-			m+= ` > Defensive // Mid Damage,  Mid Health.  Bonus: Special Skills\n`
-			m+= ` > Support   // Low Damage,  Mid Health.  Bonus: Evasion, Healing\n`
-			m+= ` > Sniper    // High Damage, Low Health.  Bonus: Long Range\n`
-			m+= ` > Builder   // Low Damage,  Mid Health.  Bonus: Build skill\n`
-			m+= ` > \n`
-			m+= ` > type "-class <your class>" to choose your class.\n`
-			m+= ` > you can choose your class only Once!\n`
-			m+= `"|-------------------------|"`
-			m+= "```"
-			message.channel.sendMessage(m)
+	// SHOW INVENTORY
+	if (message.content === '-inventory' || message.content === '-inv' ){
+		if (!profilecheck(message.author.id, message)) return;
+		let m = '```xl\n'
+		m += `"|---------INVENTORY---------|"\n`
+		for(i in db[message.author.id].inventory){
+			m += ` > `
+			m += db[message.author.id].inventory[i]
+			m += `\n`
 		}
+		m += '"|---------------------------|"```'
+		message.channel.sendMessage(m)
+	}
 
-		if (message.content.startsWith('-class') && message.content.slice(7) in cls){
-			if (!db[message.author.id].class === "none") {
-				message.channel.sendMessage(`you selected class ${message.content.slice(7)}`)
-				db[message.author.id].class = message.content.slice(7)
-				jsonfile.writeFile(dbpath, db)
-			} else {
-				message.channel.sendMessage("You already choose your class.")
-			}
+	// SHOW CURRENT PROFILE
+	if (message.content === '-profile' || message.content === '-prf'){
+		if (!profilecheck(message.author.id, message)) return;
+		let crd = db[message.author.id].credits
+		let exp = db[message.author.id].exp
+		let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
+		let ncls = db[message.author.id].class
+		let m = "```xl\n"
+		m+= `"|---------PROFILE---------|"\n`
+		m+= ` > Class: ${ncls}\n`
+		m+= ` > Level: ${lvl}\n`
+		m+= ` > Credits: ${crd}\n`
+		m+= ` > Exp: ${exp}\n`
+
+		m+= `"|-------------------------|"`
+		m+= "```"
+		message.channel.sendMessage(m)
+	}
+
+	// SHOW CURRENT PROFILE
+	if (message.content === '-class' || message.content === '-cls'){
+		if (!profilecheck(message.author.id, message)) return;
+		let m = "```xl\n"
+		m+= `"|---------CLASS---------|"\n`
+		m+= ` > availiable classes:\n`
+		m+= ` > Tank      // Low Damage,  High Health. Bonus: Armor\n`
+		m+= ` > Offensive // High Damage, Mid Health.  Bonus: Damage\n`
+		m+= ` > Defensive // Mid Damage,  Mid Health.  Bonus: Special Skills\n`
+		m+= ` > Support   // Low Damage,  Mid Health.  Bonus: Evasion, Healing\n`
+		m+= ` > Sniper    // High Damage, Low Health.  Bonus: Long Range\n`
+		m+= ` > Builder   // Low Damage,  Mid Health.  Bonus: Build skill\n`
+		m+= ` > \n`
+		m+= ` > type "-class <your class>" to choose your class.\n`
+		m+= ` > you can choose your class only Once!\n`
+		m+= `"|-------------------------|"`
+		m+= "```"
+		message.channel.sendMessage(m)
+	}
+
+	if (message.content.startsWith('-class') && message.content.slice(7) in cls){
+		if (!profilecheck(message.author.id, message)) return;
+		if (!db[message.author.id].class === "none") {
+			message.channel.sendMessage(`you selected class ${message.content.slice(7)}`)
+			db[message.author.id].class = message.content.slice(7)
+			jsonfile.writeFile(dbpath, db)
+		} else {
+			message.channel.sendMessage("You already choose your class.")
 		}
-
-
-
-		// CREATE NEW PROFILE
-
-
-		/*if (message.content.startsWith("-char") || message.content.startsWith("-charakter") && message.content.slice(6) in ) {
-
-	}*/
+	}
 })
 
 bot.login(cred.bottoken)
