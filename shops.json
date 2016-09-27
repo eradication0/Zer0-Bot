@@ -1,0 +1,31 @@
+{
+  "general":{
+    "1":"Small heal pack",
+    "2":"medium heal pack",
+    "3":"Big heal pack"
+  },
+  "tank":{
+    "1":"Normal Hammer",
+    "2":"Golden Hammer"
+  },
+  "offensive":{
+    "1":"Normal Shotgun",
+    "2":"Golden SMG"
+  },
+  "defensive":{
+    "1":"Normal Rifle",
+    "2":"Golden AK74"
+  },
+  "support":{
+    "1":"Normal Healing Staff",
+    "2":"Golden Damage Booser Staff"
+  },
+  "sniper":{
+    "1":"Normal Scouting Rifle",
+    "2":"Golden Barret"
+  },
+  "builder":{
+    "1":"Normal Repair Tool",
+    "2":"Golden Axe"
+  }
+}

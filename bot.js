@@ -13,7 +13,7 @@ console.log ('node modules √')
 const dbpath = './db.json'
 const clspath = './classes.json'
 const botpath = './bot.js'
-const newuser = {"credits":0,"exp":1,"daily":0,"class":"","inventory":{"1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","10":""}}
+const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","inventory":{"1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","10":""}}
 
 const bot = new Discord.Client()
 
@@ -22,7 +22,7 @@ function profilecheck(authorid, msg) {
 	if(db[authorid]){
 		return true
 	} else {
-		msg.channel.sendMessage("you no profile")
+		msg.channel.sendMessage("You don't have a profile. Type ``-create`` to create one.")
 		return false
 	}
 }
@@ -31,8 +31,7 @@ function profilecheck(authorid, msg) {
 var db = require("./db.json")
 var cls = require("./classes.json")
 var cred = require("./cred.json")
-var awaitid = ""
-var charname = ""
+var shop = require("./shops.json")
 
 // twitter api setup
 var client = new Twitter({
@@ -246,11 +245,13 @@ COMMANDS
 ### END CURVE #######################
 
 ## MESSSAGE TEMPLATE ################
-let m = "```xl\n"
-m+= `"|---------"---------|"\n`
-m+= ` > \n`
-m+= ` > \n`
-m+= `"|-------------------|"`
+let m = "```markdown\n"
+m+= `#=========="==========#\n`
+m+= `# Blue \n`
+m+= `+ unsorted list \n`
+m+= `1. sorted list \n`
+m+= `\n`
+m+= `#=====================#"`
 m+= "```"
 ## END MESSAGE TEMPLATE #############
 */
@@ -274,26 +275,26 @@ bot.on('message', message => {
 	}
 
 	if (message.content === '-rpg') {
-		let m = "```xl\n"
-		m+= `"|---------RPG HELP---------|"\n`
-		m+= ` > welcome to the Overwatch RPG\n`
-		m+= ` > this is the help page\n`
-		m+= ` > \n`
-		m+= ` > Commands:\n`
-		m+= ` > -create, -crt "start your adventure!"\n`
-		m+= ` > -profile, -prf "checks your profile"\n`
-		m+= ` > -inventory, -inv "shows your inventory"\n`
-		m+= ` > -daily, -dly "collect your daily rewards"\n`
-		m+= ` > -charakter, -char "choose your charakter"\n`
-		m+= ` > \n`
-		m+= ` > Infos:\n`
-		m+= ` > daily reset is everyday at 12:00 UTC+01:00\n`
-		m+= `"|--------------------------|"`
+		let m = "```markdown\n"
+		m+= `#==========RPG INFO==========#\n`
+		m+= `< welcome to the Overwatch RPG >\n`
+		m+= `+ this is the help page\n`
+		m+= `\n`
+		m+= `# Commands:\n`
+		m+= `+ -create, -crt "start your adventure!"\n`
+		m+= `+ -profile, -prf "checks your profile"\n`
+		m+= `+ -inventory, -inv "shows your inventory"\n`
+		m+= `+ -daily, -dly "collect your daily rewards"\n`
+		m+= `+ -class "shows the classes availiable"\n`
+		m+= `\n`
+		m+= `# Infos:\n`
+		m+= `+ daily reset is everyday at 12:00 UTC+01:00\n`
+		m+= `#============================#`
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
 
-// FOR USERS WITH PROFILES!
+	// FOR USERS WITH PROFILES!
 
 	// HARD RESET (TESTING ONLY)
 	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
@@ -313,6 +314,8 @@ bot.on('message', message => {
 	// DAILY
 	if (message.content === '-daily' || message.content === '-dly'){
 		if (!profilecheck(message.author.id, message)) return;
+
+
 		if (db[message.author.id].daily === 0) {
 			let dailyexp = rand(100, 1000)
 			let dailycredits = rand(100, 1000)
@@ -320,11 +323,11 @@ bot.on('message', message => {
 			db[message.author.id].credits += dailycredits
 			db[message.author.id].daily = 1
 			jsonfile.writeFile(dbpath, db)
-			let m = "```xl\n"
-			m+= `"|---------Daily reward!---------|"\n`
-			m+= ` > Credits: +${dailycredits}\n`
-			m+= ` > Exp: +${dailyexp}\n`
-			m+= `"|-------------------------------|"`
+			let m = "```markdown\n"
+			m+= `#==========DAILY REWARD!==========#\n`
+			m+= `# Credits: +${dailycredits}\n`
+			m+= `# Exp: +${dailyexp}\n`
+			m+= `#=================================#`
 			m+= "```"
 			message.channel.sendMessage(m)
 		} else {
@@ -335,14 +338,14 @@ bot.on('message', message => {
 	// SHOW INVENTORY
 	if (message.content === '-inventory' || message.content === '-inv' ){
 		if (!profilecheck(message.author.id, message)) return;
-		let m = '```xl\n'
-		m += `"|---------INVENTORY---------|"\n`
+		let m = '```markdown\n'
+		m += `#==========INVENTORY==========#\n`
 		for(i in db[message.author.id].inventory){
-			m += ` > `
+			m += `+ `
 			m += db[message.author.id].inventory[i]
 			m += `\n`
 		}
-		m += '"|---------------------------|"```'
+		m += '#=============================#```'
 		message.channel.sendMessage(m)
 	}
 
@@ -352,15 +355,14 @@ bot.on('message', message => {
 		let crd = db[message.author.id].credits
 		let exp = db[message.author.id].exp
 		let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
-		let ncls = db[message.author.id].class
-		let m = "```xl\n"
-		m+= `"|---------PROFILE---------|"\n`
-		m+= ` > Class: ${ncls}\n`
-		m+= ` > Level: ${lvl}\n`
-		m+= ` > Credits: ${crd}\n`
-		m+= ` > Exp: ${exp}\n`
-
-		m+= `"|-------------------------|"`
+		let ncls = db[message.author.id].charclass
+		let m = "```markdown\n"
+		m+= `#==========PROFILE==========#\n`
+		m+= `+ Class: ${ncls}\n`
+		m+= `+ Level: ${lvl}\n`
+		m+= `+ Credits: ${crd}\n`
+		m+= `+ Exp: ${exp}\n`
+		m+= `#===========================#`
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
@@ -368,31 +370,49 @@ bot.on('message', message => {
 	// SHOW CURRENT PROFILE
 	if (message.content === '-class' || message.content === '-cls'){
 		if (!profilecheck(message.author.id, message)) return;
-		let m = "```xl\n"
-		m+= `"|---------CLASS---------|"\n`
-		m+= ` > availiable classes:\n`
-		m+= ` > Tank      // Low Damage,  High Health. Bonus: Armor\n`
-		m+= ` > Offensive // High Damage, Mid Health.  Bonus: Damage\n`
-		m+= ` > Defensive // Mid Damage,  Mid Health.  Bonus: Special Skills\n`
-		m+= ` > Support   // Low Damage,  Mid Health.  Bonus: Evasion, Healing\n`
-		m+= ` > Sniper    // High Damage, Low Health.  Bonus: Long Range\n`
-		m+= ` > Builder   // Low Damage,  Mid Health.  Bonus: Build skill\n`
-		m+= ` > \n`
-		m+= ` > type "-class <your class>" to choose your class.\n`
-		m+= ` > you can choose your class only Once!\n`
-		m+= `"|-------------------------|"`
+		let m = "```markdown\n"
+		m+= `#==========CLASSES==========#\n`
+		m+= `# availiable classes:\n`
+		m+= `1. Tank      // Low Damage,  High Health. Bonus: Armor\n`
+		m+= `2. Offensive // High Damage, Mid Health.  Bonus: Damage\n`
+		m+= `3. Defensive // Mid Damage,  Mid Health.  Bonus: Special Skills\n`
+		m+= `4. Support   // Low Damage,  Mid Health.  Bonus: Evasion, Healing\n`
+		m+= `5. Sniper    // High Damage, Low Health.  Bonus: Long Range\n`
+		m+= `6. Builder   // Low Damage,  Mid Health.  Bonus: Build skill\n`
+		m+= `\n`
+		m+= `# type "-class <your class>" to choose your class.\n`
+		m+= `# you can choose your class only Once!\n`
+		m+= `#===========================#`
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
 
 	if (message.content.startsWith('-class') && message.content.slice(7) in cls){
 		if (!profilecheck(message.author.id, message)) return;
-		if (!db[message.author.id].class === "none") {
+		if (db[message.author.id].charclass === "none") {
 			message.channel.sendMessage(`you selected class ${message.content.slice(7)}`)
-			db[message.author.id].class = message.content.slice(7)
+			db[message.author.id].charclass = message.content.slice(7)
 			jsonfile.writeFile(dbpath, db)
 		} else {
 			message.channel.sendMessage("You already choose your class.")
+		}
+	}
+
+	if (message.content.startsWith('-shop')){
+		if (!profilecheck(message.author.id, message)) return
+		if (db[message.author.id].charclass !== "none") {
+			let pickedclass = db[message.author.id].charclass
+			let m = "```markdown\n"
+			m+= `#==========${pickedclass} SHOP==========#\n`
+			m+= `# availiable items:\n`
+			for (i in shop[pickedclass]) {
+				m+= `${i}. ${shop[pickedclass][i]} \n`
+			}
+			m+= `#========================#`
+			m+= "```"
+			message.channel.sendMessage(m)
+		} else {
+			message.channel.sendMessage("You have to choose a class first. Type ``-class`` to see all classes.")
 		}
 	}
 })
