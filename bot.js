@@ -78,6 +78,15 @@ bot.on('message', message => {
 		}
 	}
 
+	if (message.content.startsWith('.kill') && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760') {
+		message.channel.sendMessage('shutting bot down')
+		setTimeout(function () {
+			process.exit(1)
+		}, 1000);
+
+
+	}
+
 	//-----------------------------------
 	// OTHER STUFF
 	//-----------------------------------
@@ -309,6 +318,16 @@ bot.on('message', message => {
 		let dailyexp = rand(100, 1000)
 		db[message.author.id].exp += dailyexp
 		message.channel.sendMessage(`added ${dailyexp} exp`)
+	}
+
+	// FREE GOLD BAR (TESTING ONLY)
+	if (message.content === '-freegoldbar' && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760'){
+		for(i in db[message.author.id].inventory){
+			if (db[message.author.id].inventory[i] === "-"){
+ 				db[message.author.id].inventory[i] = "GoldBar"
+				return
+			}
+		}
 	}
 
 	// DAILY
