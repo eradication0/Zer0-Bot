@@ -6,26 +6,32 @@
   },
   "tank":{
     "1":"Normal Hammer",
-    "2":"Golden Hammer"
+    "2":"Golden Hammer",
+    "3":"Casual Shield"
   },
   "offensive":{
     "1":"Normal Shotgun",
-    "2":"Golden SMG"
+    "2":"Golden SMG",
+    "3":"Double Shotgun"
   },
   "defensive":{
     "1":"Normal Rifle",
-    "2":"Golden AK74"
+    "2":"Golden AK74",
+    "3":"Ice Shaker",
   },
   "support":{
     "1":"Normal Healing Staff",
-    "2":"Golden Damage Booser Staff"
+    "2":"Golden Damage Booser Staff",
+    "3":"Balls of Steal"
   },
   "sniper":{
     "1":"Normal Scouting Rifle",
-    "2":"Golden Barret"
+    "2":"Golden Barret",
+    "3":"SV-98"
   },
   "builder":{
     "1":"Normal Repair Tool",
-    "2":"Golden Axe"
+    "2":"Golden Axe",
+    "3":"Some really good scrap"
   }
 }

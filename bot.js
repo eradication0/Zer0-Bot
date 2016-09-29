@@ -12,8 +12,9 @@ console.log ('node modules √')
 
 const dbpath = './db.json'
 const clspath = './classes.json'
+const frcpath = './fraction.json'
 const botpath = './bot.js'
-const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}}
+const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","fraction":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}}
 
 const bot = new Discord.Client()
 
@@ -32,6 +33,7 @@ var db = require("./db.json")
 var cls = require("./classes.json")
 var cred = require("./cred.json")
 var shop = require("./shops.json")
+var frc = require("./fractions.json")
 
 // twitter api setup
 var client = new Twitter({
@@ -416,6 +418,33 @@ bot.on('message', message => {
 			jsonfile.writeFile(dbpath, db)
 		} else {
 			message.channel.sendMessage("You already choose your class.")
+		}
+	}
+
+	if (message.content === '-fraction' || message.content === '-frc'){
+		if(!profilecheck(message.author.id, message)) return;
+		let m = "```markdown\n"
+		m+= `#==========FRACTIONS==========#\n`
+		m+= `# availiable fractions:\n`
+		m+= `1. Overwatch      // ...  Bonus: Sympathy\n`
+		m+= `2. Blackwatch     // ...  Bonus: Stealth\n`
+		m+= `3. Talon          // ...  Bonus: Speakcraft\n`
+		m+= `\n`
+		m+= `# type "-fraction <your fraction>" to choose your fraction.\n`
+		m+= `# you can choose your fraction only Once!\n`
+		m+= `#===========================#`
+		m+= "```"
+		message.channel.sendMessage(m)
+	}
+
+	if (message.content.startsWith('-fraction') && message.content.slice(10) in frc){
+		if (!profilecheck(message.author.id, message)) return;
+		if (db[message.author.id].fraction === "none") {
+			message.channel.sendMessage(`you are now a member of ${message.content.slice(10)}`)
+			db[message.author.id].fraction = message.content.slice(10)
+			jsonfile.writeFile(dbpath, db)
+		} else {
+			message.channel.sendMessage("You already choose your fraction.")
 		}
 	}
 
