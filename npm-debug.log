@@ -18,35 +18,35 @@
 11 silly cache add   escapedName: null,
 11 silly cache add   name: null,
 11 silly cache add   rawSpec: './cred.json',
-11 silly cache add   spec: 'C:\\Privat\\OverSwiss\\cred.json',
+11 silly cache add   spec: 'C:\\Privat\\OverSwissBot\\cred.json',
 11 silly cache add   type: 'local' }
-12 error addLocal Could not install C:\Privat\OverSwiss\cred.json
-13 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwiss\cred.json'
+12 error addLocal Could not install C:\Privat\OverSwissBot\cred.json
+13 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwissBot\cred.json'
 13 silly fetchPackageMetaData     at Error (native)
-13 silly fetchPackageMetaData  error for ./cred.json { Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwiss\cred.json'
+13 silly fetchPackageMetaData  error for ./cred.json { Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwissBot\cred.json'
 13 silly fetchPackageMetaData     at Error (native)
 13 silly fetchPackageMetaData   errno: -4058,
 13 silly fetchPackageMetaData   code: 'ENOENT',
 13 silly fetchPackageMetaData   syscall: 'open',
-13 silly fetchPackageMetaData   path: 'C:\\Privat\\OverSwiss\\cred.json' }
+13 silly fetchPackageMetaData   path: 'C:\\Privat\\OverSwissBot\\cred.json' }
 14 silly rollbackFailedOptional Starting
 15 silly rollbackFailedOptional Finishing
 16 silly runTopLevelLifecycles Starting
 17 silly runTopLevelLifecycles Finishing
 18 silly install printInstalled
-19 verbose stack Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwiss\cred.json'
+19 verbose stack Error: ENOENT: no such file or directory, open 'C:\Privat\OverSwissBot\cred.json'
 19 verbose stack     at Error (native)
-20 verbose cwd C:\Privat\OverSwiss
+20 verbose cwd C:\Privat\OverSwissBot
 21 error Windows_NT 10.0.10586
 22 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "./cred.json"
 23 error node v6.5.0
 24 error npm  v3.10.3
-25 error path C:\Privat\OverSwiss\cred.json
+25 error path C:\Privat\OverSwissBot\cred.json
 26 error code ENOENT
 27 error errno -4058
 28 error syscall open
-29 error enoent ENOENT: no such file or directory, open 'C:\Privat\OverSwiss\cred.json'
-30 error enoent ENOENT: no such file or directory, open 'C:\Privat\OverSwiss\cred.json'
+29 error enoent ENOENT: no such file or directory, open 'C:\Privat\OverSwissBot\cred.json'
+30 error enoent ENOENT: no such file or directory, open 'C:\Privat\OverSwissBot\cred.json'
 30 error enoent This is most likely not a problem with npm itself
 30 error enoent and is related to npm not being able to find a file.
 31 verbose exit [ -4058, true ]
