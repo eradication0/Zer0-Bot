@@ -100,6 +100,11 @@ bot.on('message', message => {
 		message.channel.sendMessage(m)
 	}
 
+	if (message.content.startsWith("-invisible")){
+		let m = "See all users that pretend to be offline: https://api.predator.wtf/discord/new.php?serverid=" + message.guild.id
+		message.channel.sendMessage(m)
+	}
+
 	// NAME
 	if (message.content.startsWith('-name'))
 	{
@@ -230,7 +235,7 @@ bot.on('message', message => {
 	// TWITTER
 	//-----------------------------------
 	if (message.content.startsWith('-tweet') && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760'){
-		let tweetbody = message.content.slice(7)
+		let tweetbody = message.cleanContent.slice(7)
 		if (tweetbody.length <= 140) {
 			client.post('statuses/update', {status: tweetbody},  function(error, tweet, response) {
 				message.channel.sendMessage('Sucessfully tweeted:"' + tweetbody + '" to: https://twitter.com/OverSwiss')
