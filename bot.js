@@ -100,6 +100,7 @@ bot.on('message', message => {
 		message.channel.sendMessage(m)
 	}
 
+	// INVISIBLE
 	if (message.content.startsWith("-invisible")){
 		let m = "See all users that pretend to be offline: https://api.predator.wtf/discord/new.php?serverid=" + message.guild.id
 		message.channel.sendMessage(m)
