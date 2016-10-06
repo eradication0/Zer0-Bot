@@ -471,8 +471,6 @@ bot.on('message', message => {
 			message.channel.sendMessage("You have to choose a class first. Type ``-class`` to see all classes.")
 		}
 	}
-
-
 })
 
 bot.login(cred.bottoken)
