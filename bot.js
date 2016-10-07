@@ -459,7 +459,8 @@ bot.on('message', message => {
 		let m = '```markdown\n'
 		m += `#==========STATS==========#\n`
 		for(i in db[message.author.id].stats){
-			m += db[message.author.id].stats
+			m += `${i} : `
+			m += db[message.author.id].stats[i]
 			m += `\n`
 		}
 		m += '#=========================#```'
