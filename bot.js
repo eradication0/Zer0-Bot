@@ -12,9 +12,9 @@ console.log ('node modules √')
 
 const dbpath = './db.json'
 const clspath = './classes.json'
-const frcpath = './fractions.json'
+const orgpath = './organisations.json'
 const botpath = './bot.js'
-const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","fraction":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}}
+const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","organisation":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}, "stats":{"Health":"-","Armor":"-","Strength":"-","Range":"-"}}
 
 const bot = new Discord.Client()
 
@@ -33,7 +33,7 @@ var db = require("./db.json")
 var cls = require("./classes.json")
 var cred = require("./cred.json")
 var shop = require("./shops.json")
-var frc = require("./fractions.json")
+var org = require("./organisations.json")
 
 // twitter api setup
 var client = new Twitter({
@@ -267,16 +267,18 @@ bot.on('message', message => {
 
 	if (message.content === '-rpg') {
 		let m = "```markdown\n"
-		m+= `#==========RPG INFO==========#\n`
+		m+= `#==========RPG HELP==========#\n`
 		m+= `< welcome to the Overwatch RPG >\n`
 		m+= `+ this is the help page\n`
 		m+= `\n`
 		m+= `# Commands:\n`
 		m+= `+ -create, -crt "start your adventure!"\n`
 		m+= `+ -profile, -prf "checks your profile"\n`
-		m+= `+ -inventory, -inv "shows your inventory"\n`
+		m+= `+ -stats, -sts "checks your stats"\n`
+		m+= `+ -class, -cls "shows the classes availiable"\n`
+		m+= `+ -organisation, -org "shows the 3 selectable organisations"\n`
 		m+= `+ -daily, -dly "collect your daily rewards"\n`
-		m+= `+ -class "shows the classes availiable"\n`
+		m+= `+ -inventory, -inv "shows your inventory"\n`
 		m+= `\n`
 		m+= `# Infos:\n`
 		m+= `+ daily reset is everyday at 12:00 UTC+01:00\n`
@@ -287,7 +289,8 @@ bot.on('message', message => {
 
 	// FOR USERS WITH PROFILES!
 
-	// HARD RESET (TESTING ONLY)
+	// TESTING TAGS
+	// HARD RESET
 	if (message.content === '-reset' && message.author.id === '64438454750031872' || message.content.startsWith('-reset') && message.author.id === '148764744231157760'){
 		for(i in db){
 			db[i].daily = 0
@@ -295,15 +298,14 @@ bot.on('message', message => {
 		message.channel.sendMessage("daily reset!")
 	}
 
-	// FREE EXP (TESTING ONLY)
+	// FREE EXP
 	if (message.content === '-freeexp' && message.author.id === '64438454750031872' || message.content.startsWith('-freeexp') && message.author.id === '148764744231157760'){
 		let dailyexp = rand(100, 1000)
 		db[message.author.id].exp += dailyexp
 		message.channel.sendMessage(`added ${dailyexp} exp`)
 	}
 
-	// FREE ITEMS (TESTING ONLY)
-
+	// FREE ITEMS
 	if (message.content.startsWith('-giveitem') && message.author.id === '64438454750031872' || message.content.startsWith('-giveitem') && message.author.id === '148764744231157760'){
 		for(i in db[message.author.id].inventory){
 			if (db[message.author.id].inventory[i] === "-"){
@@ -314,6 +316,7 @@ bot.on('message', message => {
 		}
 	}
 
+	// STANDART RPG TAGS
 	// DAILY EXP & CREDITS
 	if (message.content === '-daily' || message.content === '-dly'){
 		if (!profilecheck(message.author.id, message)) return;
@@ -357,13 +360,13 @@ bot.on('message', message => {
 		if (!profilecheck(message.author.id, message)) return;
 		let crd = db[message.author.id].credits
 		let exp = db[message.author.id].exp
-		let frc = db[message.author.id].fraction
+		let org = db[message.author.id].organisation
 		let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
 		let ncls = db[message.author.id].charclass
 		let m = "```markdown\n"
 		m+= `#==========PROFILE==========#\n`
 		m+= `+ Class: ${ncls}\n`
-		m+= `+ Fraction: ${frc}\n`
+		m+= `+ Organisation: ${org}\n`
 		m+= `+ Level: ${lvl}\n`
 		m+= `+ Credits: ${crd}\n`
 		m+= `+ Exp: ${exp}\n`
@@ -386,7 +389,8 @@ bot.on('message', message => {
 		m+= `6. Builder   // Low Damage,  Mid Health.  Bonus: Build skill\n`
 		m+= `\n`
 		m+= `# type "-class <your class>" to choose your class.\n`
-		m+= `# you can choose your class only Once!\n`
+		m+= `# you have to write the classname small.\n`
+		m+= `# You can choose your class only Once!\n`
 		m+= `#===========================#`
 		m+= "```"
 		message.channel.sendMessage(m)
@@ -395,7 +399,7 @@ bot.on('message', message => {
 	if (message.content.startsWith('-class') && message.content.slice(7) in cls){
 		if (!profilecheck(message.author.id, message)) return;
 		if (db[message.author.id].charclass === "none") {
-			message.channel.sendMessage(`you selected class ${message.content.slice(7)}`)
+			message.channel.sendMessage(`You selected class ${message.content.slice(7)}`)
 			db[message.author.id].charclass = message.content.slice(7)
 			jsonfile.writeFile(dbpath, db)
 		} else {
@@ -403,30 +407,31 @@ bot.on('message', message => {
 		}
 	}
 
-	if (message.content === '-fraction' || message.content === '-frc'){
+	if (message.content === '-organisation' || message.content === '-org'){
 		if(!profilecheck(message.author.id, message)) return;
 		let m = "```markdown\n"
-		m+= `#==========FRACTIONS==========#\n`
-		m+= `# availiable fractions:\n`
+		m+= `#==========ORGANISATIONS==========#\n`
+		m+= `# availiable organisations:\n`
 		m+= `1. Overwatch      // ...  Bonus: +30 Sympathy\n`
 		m+= `2. Blackwatch     // ...  Bonus: +30 Stealth\n`
 		m+= `3. Ominc          // ...  Bonus: +30 Armor\n`
 		m+= `\n`
-		m+= `# type "-fraction <your fraction>" to choose your fraction.\n`
-		m+= `# you can choose your fraction only Once!\n`
-		m+= `#===========================#`
+		m+= `# type "-organisation <your organisation>" to choose your organisation.\n`
+		m+= `# you have to write the organisationname small.\n`
+		m+= `# you can choose your organisation only Once!\n`
+		m+= `#=================================#`
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
 
-	if (message.content.startsWith('-fraction') && message.content.slice(10) in frc){
+	if (message.content.startsWith('-organisation') && message.content.slice(10) in org){
 		if (!profilecheck(message.author.id, message)) return;
-		if (db[message.author.id].fraction === "none") {
-			message.channel.sendMessage(`you are now a member of ${message.content.slice(10)}`)
-			db[message.author.id].fraction = message.content.slice(10)
+		if (db[message.author.id].organisation === "none") {
+			message.channel.sendMessage(`You are now a member of ${message.content.slice(10)}`)
+			db[message.author.id].organisation = message.content.slice(10)
 			jsonfile.writeFile(dbpath, db)
 		} else {
-			message.channel.sendMessage("You already choose your fraction.")
+			message.channel.sendMessage("You already choose your organisation.")
 		}
 	}
 
@@ -447,7 +452,21 @@ bot.on('message', message => {
 			message.channel.sendMessage("You have to choose a class first. Type ``-class`` to see all classes.")
 		}
 	}
+
+	// RPG STATS
+	if (message.content === '-stats' || message.content === '-sts' ){
+		if (!profilecheck(message.author.id, message)) return;
+		let m = '```markdown\n'
+		m += `#==========STATS==========#\n`
+		for(i in db[message.author.id].stats){
+			m += db[message.author.id].stats
+			m += `\n`
+		}
+		m += '#=========================#```'
+		message.channel.sendMessage(m)
+	}
 })
+
 
 bot.login(cred.bottoken)
 console.log ('login √')
