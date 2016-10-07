@@ -80,7 +80,7 @@ bot.on('message', message => {
 		}
 	}
 
-	if (message.content.startsWith('.kill') && message.author.id === '64438454750031872' || message.content.startsWith('.eval') && message.author.id === '148764744231157760') {
+	if (message.content.startsWith('.kill') && message.author.id === '64438454750031872' || message.content.startsWith('.kill') && message.author.id === '148764744231157760') {
 		message.channel.sendMessage('shutting bot down')
 		setTimeout(function () {
 			process.exit(1)
@@ -120,7 +120,7 @@ bot.on('message', message => {
 	// COMP PROFILE
 	if (message.content.startsWith('-comp'))
 	{
-		let battletag = message.content.slice(7)
+		let battletag = message.content.slice(6)
 		let url = 'https://api.lootbox.eu/pc/eu/' + battletag.replace('#','-') + '/competitive-play/allHeroes/'
 		message.channel.sendMessage(url)
 		message.channel.sendMessage('loading from DB...')
@@ -135,7 +135,7 @@ bot.on('message', message => {
 				let kd = body.Eliminations
 				let Winrate = body.GamesWon / body.GamesPlayed * 100
 				let m = ''
-				m += '```xl\n'
+				m += '```ruby\n'
 				m += `${battletag} "Competitive Profile"\n`
 				m += `Comp Games Winrate: ${Winrate}%\n`
 				m += `Comp Games Played: ${body.GamesPlayed}\n`
@@ -172,7 +172,7 @@ bot.on('message', message => {
 				let kd = body.Eliminations
 				let Winrate = body.GamesWon / body.GamesPlayed * 100
 				let m = ''
-				m += '```xl\n'
+				m += '```ruby\n'
 				m += `${battletag} "Quick Profile"\n`
 				m += `Quick Games Winrate: ${Winrate}%\n`
 				m += `Quick Games Played: ${body.GamesPlayed}\n`
@@ -247,32 +247,6 @@ bot.on('message', message => {
 	}
 })
 
-
-/*
-## EXP CURVE ########################
-EQUASIONS
-x = 1 * (3 ^ y)
-y = log(x/1) / log(3)
-DEFINITION
-x = exp
-y = lvl
-COMMANDS
-.eval Math.log(EXP / 10) / Math.log(1.5)
-.eval 10 * Math.pow(1.5, LVL)
-### END CURVE #######################
-
-## MESSSAGE TEMPLATE ################
-let m = "```markdown\n"
-m+= `#=========="==========#\n`
-m+= `# Blue \n`
-m+= `+ unsorted list \n`
-m+= `1. sorted list \n`
-m+= `\n`
-m+= `#=====================#"`
-m+= "```"
-## END MESSAGE TEMPLATE #############
-*/
-
 //-----------------------------------
 // RPG
 //-----------------------------------
@@ -328,7 +302,7 @@ bot.on('message', message => {
 		message.channel.sendMessage(`added ${dailyexp} exp`)
 	}
 
-	// FREE GOLD BAR (TESTING ONLY)
+	// FREE ITEMS (TESTING ONLY)
 
 	if (message.content.startsWith('-giveitem') && message.author.id === '64438454750031872' || message.content.startsWith('-giveitem') && message.author.id === '148764744231157760'){
 		for(i in db[message.author.id].inventory){
@@ -340,7 +314,7 @@ bot.on('message', message => {
 		}
 	}
 
-	// DAILY
+	// DAILY EXP & CREDITS
 	if (message.content === '-daily' || message.content === '-dly'){
 		if (!profilecheck(message.author.id, message)) return;
 
