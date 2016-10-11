@@ -12,10 +12,9 @@ console.log ('node modules √')
 
 const dbpath = './db.json'
 const clspath = './classes.json'
-const orgpath = './organisations.json'
+const frcpath = './fractions.json'
 const botpath = './bot.js'
-const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","organisation":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}, "stats":{"Health":"-","Armor":"-","Strength":"-","Range":"-"}}
-
+const newuser = {"credits":0,"exp":1,"daily":0,"charclass":"none","fraction":"none","inventory":{"1":"-","2":"-","3":"-","4":"-","5":"-","6":"-","7":"-","8":"-","9":"-","10":"-"}, "stats":{"Health":"-","Armor":"-","Strength":"-","Range":"-"}}
 const bot = new Discord.Client()
 
 // FUNCTION
@@ -33,7 +32,7 @@ var db = require("./db.json")
 var cls = require("./classes.json")
 var cred = require("./cred.json")
 var shop = require("./shops.json")
-var org = require("./organisations.json")
+var frc = require("./fractions.json")
 
 // twitter api setup
 var client = new Twitter({
@@ -276,7 +275,7 @@ bot.on('message', message => {
 		m+= `+ -profile, -prf "checks your profile"\n`
 		m+= `+ -stats, -sts "checks your stats"\n`
 		m+= `+ -class, -cls "shows the classes availiable"\n`
-		m+= `+ -organisation, -org "shows the 3 selectable organisations"\n`
+		m+= `+ -fractions, -frc "shows the 3 selectable fractions"\n`
 		m+= `+ -daily, -dly "collect your daily rewards"\n`
 		m+= `+ -inventory, -inv "shows your inventory"\n`
 		m+= `\n`
@@ -360,13 +359,13 @@ bot.on('message', message => {
 		if (!profilecheck(message.author.id, message)) return;
 		let crd = db[message.author.id].credits
 		let exp = db[message.author.id].exp
-		let org = db[message.author.id].organisation
+		let frc = db[message.author.id].fraction
 		let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
 		let ncls = db[message.author.id].charclass
 		let m = "```markdown\n"
 		m+= `#==========PROFILE==========#\n`
 		m+= `+ Class: ${ncls}\n`
-		m+= `+ Organisation: ${org}\n`
+		m+= `+ fraction: ${frc}\n`
 		m+= `+ Level: ${lvl}\n`
 		m+= `+ Credits: ${crd}\n`
 		m+= `+ Exp: ${exp}\n`
@@ -407,31 +406,31 @@ bot.on('message', message => {
 		}
 	}
 
-	if (message.content === '-organisation' || message.content === '-org'){
+	if (message.content === '-fraction' || message.content === '-frc'){
 		if(!profilecheck(message.author.id, message)) return;
 		let m = "```markdown\n"
-		m+= `#==========ORGANISATIONS==========#\n`
-		m+= `# availiable organisations:\n`
+		m+= `#==========FRACTIONS==========#\n`
+		m+= `# availiable fractions:\n`
 		m+= `1. Overwatch      // ...  Bonus: +30 Sympathy\n`
 		m+= `2. Blackwatch     // ...  Bonus: +30 Stealth\n`
 		m+= `3. Ominc          // ...  Bonus: +30 Armor\n`
 		m+= `\n`
-		m+= `# type "-organisation <your organisation>" to choose your organisation.\n`
-		m+= `# you have to write the organisationname small.\n`
-		m+= `# you can choose your organisation only Once!\n`
+		m+= `# type "-fractions <your fraction>" to choose your fractions.\n`
+		m+= `# you have to write the fractionname small.\n`
+		m+= `# you can choose your fraction only Once!\n`
 		m+= `#=================================#`
 		m+= "```"
 		message.channel.sendMessage(m)
 	}
 
-	if (message.content.startsWith('-organisation') && message.content.slice(10) in org){
+	if (message.content.startsWith('-fraction') && message.content.slice(10) in frc){
 		if (!profilecheck(message.author.id, message)) return;
-		if (db[message.author.id].organisation === "none") {
+		if (db[message.author.id].fraction === "none") {
 			message.channel.sendMessage(`You are now a member of ${message.content.slice(10)}`)
-			db[message.author.id].organisation = message.content.slice(10)
+			db[message.author.id].fraction = message.content.slice(10)
 			jsonfile.writeFile(dbpath, db)
 		} else {
-			message.channel.sendMessage("You already choose your organisation.")
+			message.channel.sendMessage("You already choose your fraction.")
 		}
 	}
 
