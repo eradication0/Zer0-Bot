@@ -260,7 +260,7 @@ bot.on('message', message => {
 			message.channel.sendMessage("New profile created!")
 			console.log ('new profile created!')
 		} else {
-			message.channel.sendMessage('You already have a profile.');
+			message.channel.sendMessage('You already have a profile.')
 		}
 	}
 
@@ -439,7 +439,7 @@ bot.on('message', message => {
 		if (db[message.author.id].charclass !== "none") {
 			let pickedclass = db[message.author.id].charclass
 			let m = "```markdown\n"
-			m+= `#==========${pickedclass} SHOP==========#\n`
+			m+= `#==========${pickedclass.toUpperCase()} SHOP==========#\n`
 			m+= `# availiable items:\n`
 			for (i in shop[pickedclass]) {
 				m+= `${i}. ${shop[pickedclass][i]} \n`
