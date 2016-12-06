@@ -245,7 +245,19 @@ bot.on('message', message => {
 		}
 	}
 })
-
+/*
+### EXP CURVE ########################
+EQUASIONS
+x = 1 * (3 ^ y)
+y = log(x/1) / log(3)
+DEFINITION
+x = exp
+y = lvl
+COMMANDS
+.eval Math.log(EXP / 10) / Math.log(1.5)
+.eval 10 * Math.pow(1.5, LVL)
+### END CURVE #######################
+*/
 //-----------------------------------
 // RPG
 //-----------------------------------
