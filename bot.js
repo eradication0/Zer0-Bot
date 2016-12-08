@@ -1,6 +1,5 @@
 console.log('<== STARTING BOT ==>');
 
-// NPM PACKAGES
 var Discord = require('discord.js'),
     request = require('request'),
     Twitter = require('twitter'),
@@ -8,29 +7,20 @@ var Discord = require('discord.js'),
     jsonfile = require('jsonfile'),
     rand = require('random-int'),
     cronJob = require('cron').CronJob,
-
-    // PATHS
     dbpath = './db.json',
     clspath = './classes.json',
     frcpath = './fractions.json',
     botpath = './bot.js',
     cmdpath = './commands.js',
-
-    // GLOBAL VARS
     db = require("./db.json"),
     cls = require("./classes.json"),
     cred = require("./cred.json"),
     shop = require("./shops.json"),
     newuser = require("./newuser.json"),
     frc = require("./fractions.json"),
-
-    // INIT DISCORD
     bot = new Discord.Client(),
-
-    // INIT TWITTER
     client = new Twitter({consumer_key: cred.consumer, consumer_secret: cred.consumersecret, access_token_key: cred.twittertoken, access_token_secret: cred.twittertokensecret}),
 
-    // INIT DAILY RESET
     dailyreset = new cronJob({
         cronTime: '00 00 12 * * *',
         onTick: function reset() {
@@ -44,7 +34,6 @@ var Discord = require('discord.js'),
         timeZone: "Europe/Berlin"
     }),
 
-    // FUNCTIONS
     profilecheck = (authorid, msg) => {
         if (db[authorid]) {
             return true
@@ -53,14 +42,9 @@ var Discord = require('discord.js'),
             return false
         }
     };
+
 console.log('Setup √')
 
-var p1 = 0
-var p2 = 0
-
-console.log('Loading Commands...')
-
-// COMMANDS
 fs.readdirSync('./commands').forEach(function(file) {
     console.log('CMD loaded: ' + file)
     var funcname = require('./commands/' + file);
@@ -77,8 +61,14 @@ bot.on('ready', () => {
 })
 
 bot.on('message', (message) => {
-	if (message.author.id === bot.user.id) return
+    if (message.author.id === bot.user.id)
+        return
 })
+
+bot.login(cred.bottoken)
+console.log('login √')
+console.log('Last save: ' + fs.statSync(botpath).mtime)
+
 /*
 ### EXP CURVE ########################
 EQUASIONS
@@ -92,7 +82,3 @@ COMMANDS
 .eval 10 * Math.pow(1.5, LVL)
 ### END CURVE #######################
 */
-
-bot.login(cred.bottoken)
-console.log('login √')
-console.log('Last save: ' + fs.statSync(botpath).mtime)
