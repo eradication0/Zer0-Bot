@@ -1,0 +1,22 @@
+Error: Cannot find module './commands/,..,.-'\`'°-,_,.-'\`'°'
+Error: Cannot find module './commands/,_,.-'\`'°-,_,.-''\`'
+ReferenceError: newuser is not defined
+ReferenceError: fs is not defined
+ReferenceError: dbpath is not defined
+Error: Cannot find module './commands/,..,.-'\`'°-,_,.-'\`'°'
+Error: Cannot find module './commands/freeitem'
+Error: Cannot find module './commands/inv'
+TypeError: Cannot read property 'exp' of undefined
+ReferenceError: cls is not defined
+ReferenceError: cls is not defined
+ReferenceError: db is not defined
+ReferenceError: db is not defined
+ReferenceError: db is not defined
+ReferenceError: rand is not defined
+Error: Cannot find module './commands/faily'
+Error: Cannot find module './commands/,_,.-'\`'°-,_,.-''\`'
+ReferenceError: request is not defined
+ReferenceError: cls is not defined
+ReferenceError: db is not defined
+SyntaxError: Unexpected token }
+Error: Cannot find module './commands/cls'

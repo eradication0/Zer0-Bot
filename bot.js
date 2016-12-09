@@ -1,15 +1,15 @@
 console.log('<== STARTING BOT ==>');
 
-var Discord = require('discord.js'),
+var discord = require('discord.js'),
     request = require('request'),
-    Twitter = require('twitter'),
+    twitter = require('twitter'),
     fs = require('fs'),
     jsonfile = require('jsonfile'),
     rand = require('random-int'),
     cronJob = require('cron').CronJob,
     dbpath = './db.json',
     clspath = './classes.json',
-    frcpath = './fractions.json',
+    facpath = './factions.json',
     botpath = './bot.js',
     cmdpath = './commands.js',
     db = require("./db.json"),
@@ -17,9 +17,10 @@ var Discord = require('discord.js'),
     cred = require("./cred.json"),
     shop = require("./shops.json"),
     newuser = require("./newuser.json"),
-    frc = require("./fractions.json"),
-    bot = new Discord.Client(),
-    client = new Twitter({consumer_key: cred.consumer, consumer_secret: cred.consumersecret, access_token_key: cred.twittertoken, access_token_secret: cred.twittertokensecret}),
+    fac = require("./factions.json"),
+    bot = new discord.Client(),
+    time = Date.now(),
+    client = new twitter({consumer_key: cred.consumer, consumer_secret: cred.consumersecret, access_token_key: cred.twittertoken, access_token_secret: cred.twittertokensecret});
 
     dailyreset = new cronJob({
         cronTime: '00 00 12 * * *',
@@ -41,33 +42,77 @@ var Discord = require('discord.js'),
             msg.channel.sendMessage("You don't have a profile. Type ``-create`` to create one.")
             return false
         }
-    };
+    },
+
+    discordLog = (msg) => {
+        bot.channels.get('256700486508347392').sendMessage(msg)
+    },
+
+    fileLog = (e) => {
+        fs.appendFile('./log.txt', e, (err) => {})
+    }
 
 console.log('Setup √')
 
-fs.readdirSync('./commands').forEach(function(file) {
-    console.log('CMD loaded: ' + file)
-    var funcname = require('./commands/' + file);
-    funcname(bot)
-});
+// fs.readdirSync('./commands').forEach(function(file) {
+//     console.log('CMD loaded: ' + file)
+//     var funcname = require('./commands/' + file);
+//     funcname(bot)
+// });
 
 console.log('Commands loaded √')
 
 jsonfile.spaces = 2
 dailyreset.start()
 
-bot.on('ready', () => {
-    console.log('<== BOT STARTED ==>')
+bot.on('message', (message) => {
+    if (message.isMentioned(bot.user.id)) {
+		let msg = "```markdown\n"
+		msg += `> BOT MENTIONED \n* User: ${message.author.username} (${message.author.id})\n* Server : ${message.guild.name}\n* Channel: ${message.channel.name}\n* Message: ${message.cleanContent}`
+		msg += "```"
+		discordLog(msg);
+    }
+    if (message.author.id === bot.user.id) return
+    if (!message.content.startsWith(cred.prefix)) return
+
+    const args = message.content.split(' ');
+    const command = args.shift().slice(cred.prefix.length);
+
+    try {
+        let cmdFile = require('./commands/' + command);
+        cmdFile.run(bot, message, args);
+    } catch (e) {
+    	fileLog(e + '\n');
+    }
 })
 
-bot.on('message', (message) => {
-    if (message.author.id === bot.user.id)
-        return
-})
+bot.on('ready', () => {
+
+    let msg = "```markdown\n"
+    msg += `#=== BOOT TIME STATISTICS ===#\n`
+    msg += `+ Last Saved:    ${fs.statSync(botpath).mtime}\n`
+    msg += `+ Users:     ${bot.users.size}\n`
+    msg += `+ Servers:   ${bot.guilds.size}\n`
+    msg += `+ Channels:  ${bot.channels.size}\n`
+    msg += "```"
+    discordLog(msg);
+});
+
+//Export needed variables
+exports.client = client;
+exports.db = db;
+exports.request = request;
+exports.rand = rand;
+exports.fac = fac;
+exports.profilecheck = profilecheck;
+exports.jsonfile = jsonfile;
+exports.newuser = newuser;
+exports.fs = fs;
+exports.dbpath = dbpath;
+exports.cls = cls;
 
 bot.login(cred.bottoken)
-console.log('login √')
-console.log('Last save: ' + fs.statSync(botpath).mtime)
+console.log('<== BOT ONLINE ==>')
 
 /*
 ### EXP CURVE ########################
