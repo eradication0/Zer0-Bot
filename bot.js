@@ -50,7 +50,32 @@ var discord = require('discord.js'),
 
     fileLog = (e) => {
         fs.appendFile('./log.txt', e, (err) => {})
-    }
+    },
+
+	getDateTime = () => {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return  +  + day + "." + month + "." + year + " - " + hour + ":" + min + ":" + sec + "s";
+
+}
 
 console.log('Setup √')
 
@@ -68,7 +93,7 @@ dailyreset.start()
 bot.on('message', (message) => {
     if (message.isMentioned(bot.user.id)) {
 		let msg = "```markdown\n"
-		msg += `> BOT MENTIONED \n* User: ${message.author.username} (${message.author.id})\n* Server : ${message.guild.name}\n* Channel: ${message.channel.name}\n* Message: ${message.cleanContent}`
+		msg += `< BOT GOT MENTIONED > \n* User: ${message.author.username} (${message.author.id})\n* Server : ${message.guild.name}\n* Channel: ${message.channel.name}\n* Message: ${message.cleanContent}`
 		msg += "```"
 		discordLog(msg);
     }
@@ -90,7 +115,7 @@ bot.on('ready', () => {
 
     let msg = "```markdown\n"
     msg += `#=== BOOT TIME STATISTICS ===#\n`
-    msg += `+ Last Saved:    ${fs.statSync(botpath).mtime}\n`
+    msg += `+ Time:      ${getDateTime()}\n`
     msg += `+ Users:     ${bot.users.size}\n`
     msg += `+ Servers:   ${bot.guilds.size}\n`
     msg += `+ Channels:  ${bot.channels.size}\n`
