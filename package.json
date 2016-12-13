@@ -13,6 +13,7 @@
   "dependencies": {
     "cron": "^1.1.0",
     "discord.js": "^9.0.2",
+    "firebase-admin": "^4.0.4",
     "fs": "0.0.1-security",
     "git": "^0.1.5",
     "jsonfile": "^2.4.0",

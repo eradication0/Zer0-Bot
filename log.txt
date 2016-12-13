@@ -10,3 +10,5 @@ TypeError: Cannot read property 'channel' of undefined
 SyntaxError: Unexpected token .
 Error: Cannot find module './commands/,_,.-'\`'°-,_,.-'\`'°'
 ReferenceError: channel is not defined
+Error: Cannot find module './commands/,_,.-'\`'°-,_,.-'\`'°'
+Error: Cannot find module './commands/._..-'\`'°-,_,.-'\`'°'

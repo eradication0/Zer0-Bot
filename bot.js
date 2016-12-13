@@ -1,26 +1,21 @@
 console.log('<== STARTING BOT ==>');
 
+// Vars
 var discord = require('discord.js'),
     request = require('request'),
+	admin = require("firebase-admin"),
     twitter = require('twitter'),
     fs = require('fs'),
     jsonfile = require('jsonfile'),
     rand = require('random-int'),
     cronJob = require('cron').CronJob,
-    dbpath = './db.json',
-    clspath = './classes.json',
-    facpath = './factions.json',
     botpath = './bot.js',
     cmdpath = './commands.js',
-    db = require("./db.json"),
-    cls = require("./classes.json"),
+	serviceAccount = require("./firebase.json"),
     cred = require("./cred.json"),
-    shop = require("./shops.json"),
-    newuser = require("./newuser.json"),
-    fac = require("./factions.json"),
     bot = new discord.Client(),
     time = Date.now(),
-    client = new twitter({consumer_key: cred.consumer, consumer_secret: cred.consumersecret, access_token_key: cred.twittertoken, access_token_secret: cred.twittertokensecret});
+    client = new twitter({consumer_key: cred.consumer, consumer_secret: cred.consumersecret, access_token_key: cred.twittertoken, access_token_secret: cred.twittertokensecret}),
 
     dailyreset = new cronJob({
         cronTime: '00 00 12 * * *',
@@ -35,6 +30,7 @@ var discord = require('discord.js'),
         timeZone: "Europe/Berlin"
     }),
 
+// Functions
     profilecheck = (authorid, msg) => {
         if (db[authorid]) {
             return true
@@ -52,44 +48,42 @@ var discord = require('discord.js'),
         fs.appendFile('./log.txt', e, (err) => {})
     },
 
-	getDateTime = () => {
-
+    getDateTime = () => {
     var date = new Date();
-
     var hour = date.getHours();
     hour = (hour < 10 ? "0" : "") + hour;
-
     var min  = date.getMinutes();
     min = (min < 10 ? "0" : "") + min;
-
     var sec  = date.getSeconds();
     sec = (sec < 10 ? "0" : "") + sec;
-
     var year = date.getFullYear();
-
     var month = date.getMonth() + 1;
     month = (month < 10 ? "0" : "") + month;
-
     var day  = date.getDate();
     day = (day < 10 ? "0" : "") + day;
-
     return  +  + day + "." + month + "." + year + " - " + hour + ":" + min + ":" + sec + "s";
-
-}
+    }
 
 console.log('Setup √')
 
-// fs.readdirSync('./commands').forEach(function(file) {
-//     console.log('CMD loaded: ' + file)
-//     var funcname = require('./commands/' + file);
-//     funcname(bot)
-// });
-
-console.log('Commands loaded √')
-
+// Initialisation
 jsonfile.spaces = 2
 dailyreset.start()
 
+// Firebase
+var db = admin.database();
+var ref = db.ref("restricted_access/secret_document");
+
+ref.once("value", function(snapshot) {
+	discordLog(snapshot.val())
+})
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://overswissrpg.firebaseio.com"
+})
+
+// listeners
 bot.on('message', (message) => {
     if (message.isMentioned(bot.user.id)) {
 		let msg = "```markdown\n"
@@ -111,6 +105,7 @@ bot.on('message', (message) => {
     }
 })
 
+// Ready
 bot.on('ready', () => {
 
     let msg = "```markdown\n"
@@ -125,17 +120,11 @@ bot.on('ready', () => {
 
 //Export needed variables
 exports.client = client;
-exports.db = db;
 exports.request = request;
 exports.rand = rand;
-exports.fac = fac;
 exports.profilecheck = profilecheck;
 exports.jsonfile = jsonfile;
-exports.newuser = newuser;
 exports.fs = fs;
-exports.dbpath = dbpath;
-exports.cls = cls;
-exports.shop = shop;
 
 bot.login(cred.bottoken)
 console.log('<== BOT ONLINE ==>')
