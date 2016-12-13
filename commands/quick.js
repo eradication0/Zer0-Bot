@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content.startsWith('-quick')) {
         let battletag = message.content.slice(7)
         let url = 'https://api.lootbox.eu/pc/eu/' + battletag.replace('#', '-') + '/quick-play/allHeroes/'
         message.channel.sendMessage(url)
@@ -34,5 +33,4 @@ exports.run = function(bot, message, args) {
                 message.channel.sendMessage(m)
             }
         })
-    }
 }

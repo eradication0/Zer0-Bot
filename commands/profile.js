@@ -1,11 +1,10 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content === '-profile' || message.content === '-prf') {
         if (!profilecheck(message.author.id, message))
             return;
         let crd = req.db[message.author.id].credits
         let exp = req.db[message.author.id].exp
-        let frc = req.db[message.author.id].faction
+        let fac = req.db[message.author.id].faction
         let lvl = Math.trunc(Math.log(exp / 1) / Math.log(3));
         let ncls = req.db[message.author.id].charclass
         let m = "```markdown\n"
@@ -18,5 +17,4 @@ exports.run = function(bot, message, args) {
         m += `#===========================#`
         m += "```"
         message.channel.sendMessage(m)
-    }
 }

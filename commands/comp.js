@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content.startsWith('-comp')) {
         let battletag = message.content.slice(6)
         let url = 'https://api.lootbox.eu/pc/eu/' + battletag.replace('#', '-') + '/competitive-play/allHeroes/'
         message.channel.sendMessage(url)
@@ -33,5 +32,4 @@ exports.run = function(bot, message, args) {
                 message.channel.sendMessage(m)
             }
         })
-    }
 }

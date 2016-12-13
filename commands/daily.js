@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content === '-daily' || message.content === '-dly') {
         if (!profilecheck(message.author.id, message))
             return;
 
@@ -21,5 +20,4 @@ exports.run = function(bot, message, args) {
         } else {
             message.channel.sendMessage("You already collected your dailies!")
         }
-    }
 }

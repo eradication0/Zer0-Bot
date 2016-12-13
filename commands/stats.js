@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content === '-stats' || message.content === '-sts') {
         if (!profilecheck(message.author.id, message))
             return;
         let m = '```markdown\n'
@@ -12,5 +11,4 @@ exports.run = function(bot, message, args) {
         }
         m += '#=========================#```'
         message.channel.sendMessage(m)
-    }
 }

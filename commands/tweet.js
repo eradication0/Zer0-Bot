@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content.startsWith('-tweet') && message.author.id === '64438454750031872' || message.content.startsWith('-tweet') && message.author.id === '148764744231157760') {
         let tweetbody = message.cleanContent.slice(7)
         if (tweetbody.length <= 140) {
             req.client.post('statuses/update', {
@@ -11,5 +10,4 @@ exports.run = function(bot, message, args) {
         } else {
             message.channel.sendMessage("Your tweet is longer than 140 letters. Pls shorten your tweet.")
         }
-    }
 }

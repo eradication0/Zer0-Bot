@@ -1,8 +1,8 @@
 exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
-    if (message.content === '-faction') {
         if (!profilecheck(message.author.id, message))
             return;
+			console.log("tru 1")
         let m = "```markdown\n"
         m += `#==========FACTIONS==========#\n`
         m += `# availiable factions:\n`
@@ -22,14 +22,17 @@ exports.run = function(bot, message, args) {
 
 
 	if (message.content.startsWith('-faction') && message.content.slice(9) in req.fac) {
+		console.log("tru 2")
 		if (!profilecheck(message.author.id, message))
 			return;
+			console.log("tru 3")
 		if (req.db[message.author.id].faction === "none") {
 			message.channel.sendMessage(`You are now a member of ${message.content.slice(9)}`)
 			req.db[message.author.id].faction = message.content.slice(9)
 			req.jsonfile.writeFile(req.dbpath, req.db)
+			console.log("tru 4")
 		} else {
+			console.log("tru 5")
 			message.channel.sendMessage("You already choose your faction.")
 		}
-	}
 }

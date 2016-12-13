@@ -110,6 +110,7 @@ exports.newuser = newuser;
 exports.fs = fs;
 exports.dbpath = dbpath;
 exports.cls = cls;
+exports.shop = shop;
 
 bot.login(cred.bottoken)
 console.log('<== BOT ONLINE ==>')
