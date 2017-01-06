@@ -1,8 +1,0 @@
-{
-    "bottoken":"YOUTBOTTOKEN",
-    "consumer":"YOUR TWITTER CONSUMER KEY",
-    "consumersecret":"YOUR TWITTER CONSUMER SECRET KEY",
-    "twittertoken":"YOUR TWITTER TOKEN",
-    "twittertokensecret":"YOUR TWITTER SECRET",
-	"prefix":"YOUR PREFIX"
-}
