@@ -3,7 +3,7 @@ console.log('<== STARTING BOT ==>');
 // Vars
 var discord = require('discord.js'),
     request = require('request'),
-	admin = require("firebase-admin"),
+	// admin = require("firebase-admin"),
     twitter = require('twitter'),
     fs = require('fs'),
     jsonfile = require('jsonfile'),
@@ -11,7 +11,7 @@ var discord = require('discord.js'),
     cronJob = require('cron').CronJob,
     botpath = './bot.js',
     cmdpath = './commands.js',
-	serviceAccount = require("./firebase.json"),
+	// serviceAccount = require("./firebase.json"),
     cred = require("./cred.json"),
     bot = new discord.Client(),
     time = Date.now(),
@@ -70,18 +70,18 @@ console.log('Setup √')
 jsonfile.spaces = 2
 dailyreset.start()
 
-// Firebase
-var db = admin.database();
-var ref = db.ref("restricted_access/secret_document");
-
-ref.once("value", function(snapshot) {
-	discordLog(snapshot.val())
-})
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://overswissrpg.firebaseio.com"
-})
+// // Firebase
+// var db = admin.database();
+// var ref = db.ref("restricted_access/secret_document");
+//
+// ref.once("value", function(snapshot) {
+// 	discordLog(snapshot.val())
+// })
+//
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://overswissrpg.firebaseio.com"
+// })
 
 // listeners
 bot.on('message', (message) => {

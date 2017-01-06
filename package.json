@@ -17,6 +17,8 @@
     "fs": "0.0.1-security",
     "git": "^0.1.5",
     "jsonfile": "^2.4.0",
+    "node-opus": "^0.1.13",
+    "opusscript": "0.0.1",
     "random-int": "^1.0.0",
     "request": "^2.74.0",
     "twitter": "^1.4.0"
