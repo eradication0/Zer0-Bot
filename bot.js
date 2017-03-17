@@ -1,62 +1,28 @@
 console.log('<== STARTING BOT ==>');
 
-// Vars
-var discord = require('discord.js'),
-    request = require('request'),
-    fs = require('fs'),
-    jsonfile = require('jsonfile'),
-    rand = require('random-int'),
-    botpath = './bot.js',
-    cmdpath = './commands.js',
-    cred = require("./cred.json"),
-    bot = new discord.Client(),
-    time = Date.now(),
-
-    dailyreset = new cronJob({
-        cronTime: '00 00 12 * * *',
-        onTick: function reset() {
-            for (i in db) {
-                db[i].daily = 0
-            }
-            console.log("reseted the db")
-            jsonfile.writeFile(dbpath, db)
-        },
-        start: false,
-        timeZone: "Europe/Berlin"
-    }),
+	// Loading Requirements
+	const discord = require('discord.js')
+	const settings = require('./settings.json')
+	const fs = require('fs')
+	const bot = new discord.Client()
+	const jsonfile = require('jsonfile')
+	const rand = require('random-int')
+	const time = Date.now()
 
 // Functions
     discordLog = (embed) => {
         bot.channels.get('266961650693832704').sendEmbed(embed)
-    profilecheck = (authorid, msg) => {
-        if (db[authorid]) {
-            return true
-        } else {
-            msg.channel.sendMessage("You don't have a profile. Type ``-create`` to create one.")
-            return false
-        }
     },
 
     fileLog = (e) => {
         fs.appendFile('./log.txt', e, (err) => {})
-    },
-
-    getDateTime = () => {
-    var date = new Date();
-    var hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
-    var min  = date.getMinutes();
-    min = (min < 10 ? "0" : "") + min;
-    var sec  = date.getSeconds();
-    sec = (sec < 10 ? "0" : "") + sec;
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-    var day  = date.getDate();
-    day = (day < 10 ? "0" : "") + day;
-    return  +  + day + "." + month + "." + year + " - " + hour + ":" + min + ":" + sec + "s";
     }
 
+
+// Initialisation
+jsonfile.spaces = 2
+
+console.log('Setup √')
 
 // listeners
 bot.on('message', (message) => {
@@ -112,6 +78,7 @@ bot.on('message', (message) => {
 	}
 })
 
+console.log('Commands loaded √')
 
 // Ready
 bot.on('ready', () => {
