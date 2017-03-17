@@ -1,0 +1,26 @@
+{
+  "tank":{
+    "hp":1,
+    "dmg":0.1
+  },
+  "offensive":{
+    "hp":0.3,
+    "dmg":1
+  },
+  "defensive":{
+    "hp":0.3,
+    "dmg":0.8
+  },
+  "support":{
+    "hp":0.5,
+    "dmg":0.6
+  },
+  "sniper":{
+    "hp":0.2,
+    "dmg":1
+  },
+  "builder":{
+    "hp":0.4,
+    "dmg":0.5
+  }
+}
