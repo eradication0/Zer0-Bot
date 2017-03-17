@@ -10,28 +10,12 @@ console.log('<== STARTING BOT ==>');
 	const time = Date.now()
 
 // Functions
-    discordLog = (msg) => {
-        bot.channels.get('266961650693832704').sendMessage(msg)
+    discordLog = (embed) => {
+        bot.channels.get('266961650693832704').sendEmbed(embed)
     },
 
     fileLog = (e) => {
         fs.appendFile('./log.txt', e, (err) => {})
-    },
-
-    getDateTime = () => {
-    var date = new Date();
-    var hour = date.getHours();
-    hour = (hour < 10 ? "0" : "") + hour;
-    var min  = date.getMinutes();
-    min = (min < 10 ? "0" : "") + min;
-    var sec  = date.getSeconds();
-    sec = (sec < 10 ? "0" : "") + sec;
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    month = (month < 10 ? "0" : "") + month;
-    var day  = date.getDate();
-    day = (day < 10 ? "0" : "") + day;
-    return  day + "." + month + "." + year + " - " + hour + ":" + min + ":" + sec + "s";
     }
 
 
@@ -42,29 +26,55 @@ console.log('Setup √')
 
 // listeners
 bot.on('message', (message) => {
-    if (message.isMentioned(bot.user.id)) {
-		let msg = "```markdown\n"
-		msg += `< BOT GOT MENTIONED > \n* User: ${message.author.username} (${message.author.id})\n* Server : ${message.guild.name}\n* Channel: ${message.channel.name}\n* Message: ${message.cleanContent}`
-		msg += "```"
-		discordLog(msg);
-    }
+
+	// Dont listen to yourself
 	if (message.author.id === bot.user.id) return
-	if (message.content.startsWith('.eval') && message.author.id === '64438454750031872') {
+
+	// Dont listen to other bots
+	if (message.author.bot) return;
+
+	// Bot mentioned
+    if (message.isMentioned(bot.user.id)) {
+		const embed = new discord.RichEmbed()
+		.setDescription('Bot got mentioned')
+		.setTimestamp()
+		.addField('User' ,`${message.author.username} (${message.author.id})`)
+		.addField('Server' ,`${message.guild.name}`)
+		.addField('Message' ,`${message.cleanContent}`)
+		.setColor('#0000ff')
+		discordLog(embed)
+    }
+
+	// Console
+	if (message.channel.id === "289703044730585088" && message.author.id === '64438454750031872') {
 		try {
-			const com = eval(message.content.split(" ").slice(1).join(" "))
-			message.channel.sendMessage('```\n' + com + '```')
-		} catch (e) {
-			message.channel.sendMessage('```\n' + e + '```')
+			const com = eval(message.content)
+			const embed = new discord.RichEmbed()
+			.setTitle(com)
+			message.channel.sendEmbed(embed)
+		} catch (err) {
+			const embed = new discord.RichEmbed()
+			.setTitle(err)
+			message.channel.sendEmbed(embed)
 		}
 	}
+
+	// Execute command
 	if (!message.content.startsWith(settings.prefix)) return
 	const args = message.content.split(' ')
 	const command = args.shift().slice(settings.prefix.length)
 	try {
 		let cmdFile = require('./commands/' + command)
-		cmdFile.run(bot, message, args)
-	} catch (e) {
-		console.log(e + '\n');
+		cmdFile.run(bot, message, args, discord)
+	} catch (err) {
+		const embed = new discord.RichEmbed()
+		.setDescription('Error!!')
+		.setTimestamp()
+		.addField('User' ,`${message.author.username} (${message.author.id})`)
+		.addField('Server' ,`${message.guild.name}`)
+		.addField('Error' ,err)
+		.setColor('#ff0000')
+		discordLog(embed)
 	}
 })
 
@@ -72,17 +82,14 @@ console.log('Commands loaded √')
 
 // Ready
 bot.on('ready', () => {
-    let msg = "```markdown\n"
-    msg += `#=== BOOT TIME STATISTICS ===#\n`
-    msg += `+ Time:      ${getDateTime()}\n`
-    msg += `+ Users:     ${bot.users.size}\n`
-    msg += `+ Servers:   ${bot.guilds.size}\n`
-    msg += `+ Channels:  ${bot.channels.size}\n`
-    msg += "```"
-    discordLog(msg);
+	const embed = new discord.RichEmbed()
+	.setTimestamp()
+	.addField('Users' , bot.users.size)
+	.addField('Servers' , bot.guilds.size)
+	.addField('Channels' , bot.channels.size)
+	.setColor('#00ff00')
+	discordLog(embed)
 	console.log('<== BOT ONLINE ==>')
 });
-
-//exports.fs = fs;
 
 bot.login(settings.bottoken)
