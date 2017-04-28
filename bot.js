@@ -31,10 +31,10 @@ bot.on('message', (message) => {
 	if (message.author.id === bot.user.id) return
 
 	// Dont listen to other bots
-	if (message.author.bot) return;
+	if (message.author.bot) return
 
 	// Bot mentioned
-    if (message.isMentioned(bot.user.id)) {
+	if (message.isMentioned(bot.user.id)) {
 		const embed = new discord.RichEmbed()
 		.setDescription('Bot got mentioned')
 		.setTimestamp()
