@@ -1,6 +1,5 @@
 exports.run = function(bot, message, args, discord) {
-		message.channel.sendMessage('pong')
-		const embed = new discord.RichEmbed().setColor('#e5372e')
+		const embed = new discord.RichEmbed().setColor('#6DC066')
 		.setTitle('pong')
 		message.channel.sendEmbed(embed)
 }

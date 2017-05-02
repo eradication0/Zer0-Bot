@@ -11,7 +11,7 @@ console.log('<== STARTING BOT ==>');
 
 // Functions
     discordLog = (embed) => {
-        bot.channels.get('266961650693832704').sendEmbed(embed)
+        bot.channels.get('308862930676613121').sendEmbed(embed)
     },
 
     fileLog = (e) => {
@@ -65,7 +65,7 @@ bot.on('message', (message) => {
 	const command = args.shift().slice(settings.prefix.length)
 	try {
 		let cmdFile = require('./commands/' + command)
-		cmdFile.run(bot, message, args, discord)
+		cmdFile.run(bot, message, args, discord, settings)
 	} catch (err) {
 		const embed = new discord.RichEmbed()
 		.setDescription('Error!!')
@@ -75,6 +75,7 @@ bot.on('message', (message) => {
 		.addField('Error' ,err)
 		.setColor('#ff0000')
 		discordLog(embed)
+		console.log(err)
 	}
 })
 
@@ -92,4 +93,5 @@ bot.on('ready', () => {
 	console.log('<== BOT ONLINE ==>')
 });
 
+// Login
 bot.login(settings.bottoken)
