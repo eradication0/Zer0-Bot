@@ -46,7 +46,7 @@ bot.on('message', (message) => {
     }
 
 	// Console
-	if (message.channel.id === "289703044730585088" && message.author.id === '64438454750031872') {
+	if (message.channel.id === "308901535989891072" && message.author.id === '64438454750031872') {
 		try {
 			const com = eval(message.content)
 			const embed = new discord.RichEmbed()
@@ -77,6 +77,13 @@ bot.on('message', (message) => {
 		discordLog(embed)
 		console.log(err)
 	}
+})
+
+bot.on('guildMemberAdd', member => {
+if (guild.id === '134436989175988224') {
+	member.guild.defaultChannel.send(`test message ${member}!`);
+
+}
 })
 
 console.log('Commands loaded √')
