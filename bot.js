@@ -80,10 +80,9 @@ bot.on('message', (message) => {
 })
 
 bot.on('guildMemberAdd', member => {
-if (guild.id === '134436989175988224') {
-	member.guild.defaultChannel.send(`test message ${member}!`);
-
-}
+	if (member.guild.roles.has("308864141886619648")) {
+		member.addRole("308864141886619648")
+	}
 })
 
 console.log('Commands loaded √')
