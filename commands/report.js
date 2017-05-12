@@ -47,27 +47,27 @@ exports.run = function(bot, message, args, discord, settings) {
 			reports[reporter].created = createdCount;
 			fs.writeFile(reportsPath, JSON.stringify(reports))
 
-			// // Response
-			// embed.setTitle('Your #' + reports[reporter].created + ' report was successful. The reported user now have a report count of ' + reports[reported].recieved).setColor('#6DC066')
-			// message.channel.sendEmbed(embed)
-			//
-			// // Embed logging
-			// let totalRecieved = 0
-			// let reportReason = ''
-			//
-			// for (var L in args) {
-			// 	reportReason += args[L] + ' '
-			// }
-			//
-			// for (var I in reports) {
-			// 	totalRecieved += reports[I].recieved
-			// }
-			//
-			// const logEmbed = new discord.RichEmbed()
-			// .setColor('#8BAFD8')
-			// .setTitle('Report #' + totalRecieved)
-			// .setDescription(reportReason)
-			// bot.channels.get('309601440685359104').sendEmbed(logEmbed)
+			// Response
+			embed.setTitle('Your #' + reports[reporter].created + ' was created. Reported subject now have ' + reports[reported].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
+			message.channel.sendEmbed(embed)
+
+			// Embed logging
+			let totalRecieved = 0
+			let reportReason = ''
+
+			for (var L in args) {
+				reportReason += args[L] + ' '
+			}
+
+			for (var I in reports) {
+				totalRecieved += reports[I].recieved
+			}
+
+			const logEmbed = new discord.RichEmbed()
+			.setColor('#8BAFD8')
+			.setTitle('Report #' + totalRecieved)
+			.setDescription(reportReason)
+			bot.channels.get('309601440685359104').sendEmbed(logEmbed)
 		}
 	}
 }

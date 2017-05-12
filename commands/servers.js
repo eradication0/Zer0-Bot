@@ -9,11 +9,9 @@ exports.run = function(bot, message, args, discord) {
             } else {
                 embed.addField(guild.name, guild.id)
             }
-
         });
         message.channel.sendEmbed(embed)
     } else {
         message.channel.sendMessage("No Permission")
     }
-
 }
