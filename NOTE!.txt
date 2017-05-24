@@ -1,0 +1,9 @@
+sendEmbed(embed, content, options) {
+   if (!options && typeof content === 'object' && !(content instanceof Array)) {
+	 options = content;
+	 content = '';
+   } else if (!options) {
+	 options = {};
+   }
+   return this.send(content, Object.assign(options, { embed }));
+ }
