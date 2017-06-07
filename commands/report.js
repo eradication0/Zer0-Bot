@@ -30,6 +30,12 @@ exports.run = function(bot, message, args, discord, settings) {
 			message.channel.sendEmbed(embed)
 		} else {
 
+			if (reported === reporter) {
+				embed.setTitle('You cant report yourself :^)')
+				message.channel.sendEmbed(embed)
+				return
+			}
+
 			if (!reports[reported]) {
 				reports[reported] = {"created":0,"recieved":0}
 				reports[reported].id = reported;
