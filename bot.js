@@ -18,7 +18,6 @@ console.log('<== STARTING BOT ==>');
         fs.appendFile('./log.txt', e, (err) => {})
     }
 
-
 // Initialisation
 jsonfile.spaces = 2
 
@@ -30,9 +29,6 @@ bot.on('message', (message) => {
 
 	// Dont listen to other bots
 	if (message.author.bot) return
-
-	// Bot mentioned
-	if (message.isMentioned(bot.user.id)) {}
 
 	// Execute command
 	if (!message.content.startsWith(settings.prefix)) return

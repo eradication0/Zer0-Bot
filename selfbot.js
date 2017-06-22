@@ -96,6 +96,11 @@ bot.on('message', message => {
 			return
 		}
 
+		if (db.coin === 0) {
+			channel.message.sendMessage("You dont have any money :(")
+			return
+		}
+
 
         if (args[1] === "black") {
             test()

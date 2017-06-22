@@ -54,7 +54,7 @@ exports.run = function(bot, message, args, discord, settings) {
 			fs.writeFile(reportsPath, JSON.stringify(reports))
 
 			// Response
-			embed.setTitle('Your #' + reports[reporter].created + ' was created. Reported subject now have ' + reports[reported].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
+			embed.setTitle('Your #' + reports[reporter].created + ' report was created. Reported subject now have ' + reports[reported].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
 			message.channel.sendEmbed(embed)
 
 			// Embed logging

@@ -16,6 +16,7 @@ exports.run = function(bot, message, args, discord, settings) {
 	for (var i = 0; i < ary.length; i++) {
 		embed.addField('#' + (i+1) + ' with **' + ary[i].recieved + '** Reports taken', '<@' + ary[i].id + '>')
 		ary[i].recieved
+		console.log(i)
 		if (i === 6) { break }
 	}
 
