@@ -6,6 +6,7 @@ const dbPath =  'selfbotDB.json'
 const urban = require('relevant-urban');
 const fs = require('fs');
 const bot = new discord.Client();
+const rand = require('random-int')
 
 bot.on('message', message => {
     if (message.author !== bot.user)
