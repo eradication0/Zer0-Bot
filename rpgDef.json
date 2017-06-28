@@ -1,0 +1,9 @@
+{
+	"weapons" : {
+		"Glock-19" : 10,
+		"MP5" : 15,
+		"M4A1" : 20,
+		"Laser Pistol" : 25,
+		"Railgun" : 30
+	}
+}
