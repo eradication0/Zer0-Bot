@@ -16,12 +16,11 @@ exports.run = function(bot, message, args, discord, settings) {
 		+ settings.prefix + 'hots \u200b \u200b \u200b'
 		+ settings.prefix + 'lol \u200b \u200b \u200b'
 		+ settings.prefix + 'pubg \u200b \u200b \u200b'
-		+ settings.prefix + 'ow \u200b \u200b \u200b',
-	'\u200b ')
+		+ settings.prefix + 'ow \u200b \u200b \u200b','\u200b ')
 
 	.addField('\u200b','[Mod Commands]()')
 	.addField(settings.prefix + 'servers','Shows all servers the bot is connected to.')
 	.addField(settings.prefix + 'kill','Shuts the bot down')
 
-	message.channel.sendEmbed(embed)
+	message.channel.send({ embed });
 }

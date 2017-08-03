@@ -17,8 +17,8 @@ dbBackup = () => {
 		fs.writeFileSync(dbPath, JSON.stringify(db))
 		dbBackup()
 		let time = new Date()
-		console.log("RPG DB Backuped √ " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " " + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
-	}, 30000); //every 15 secs
+		//console.log("RPG DB Backuped √ " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " " + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
+	}, 30000); //backup interval
 }
 dbBackup()
 
@@ -28,6 +28,26 @@ dbBackup()
 bot.on('guildMemberAdd', member => {
 	if (member.guild.roles.has("308864141886619648")) {
 		member.addRole("308864141886619648")
+	}
+})
+
+bot.on('presenceUpdate', (memberOld, member) => {
+	if (member.presence.game === null) {
+		return
+	}
+	for (var i in settings.roles) {
+		if (member.presence.game.name === settings.roles[i].name && member.guild.id === "134436989175988224") {
+			let RoleToFind = settings.roles[i].id;
+			if (member.roles.get(RoleToFind)) {
+				console.log(member.user.username + " already got role " + settings.roles[i].name)
+				return
+			} else {
+				member.addRole(RoleToFind)
+				bot.channels.get('313659722093821952').send(member.user.username + " got a new role: " + settings.roles[i].name)
+				console.log(member.user.username + " got a new role: " + settings.roles[i].name)
+				return
+			}
+		}
 	}
 })
 
@@ -42,7 +62,7 @@ bot.on('message', (message) => {
 		return
 
 		// execute command
-	if (!message.content.startsWith(settings.prefix))
+	if (message.content.startsWith(settings.prefix) === false)
 		return
 	const args = message.content.split(' ')
 	const command = args.shift().slice(settings.prefix.length)
@@ -66,8 +86,8 @@ bot.on('message', (message) => {
 			return -1
 		} else if (currentlvl < content.lvl) {
 			let lvlamount = content.lvl - currentlvl
-			content.maxhealth += lvlamount*10+content.lvl^2
-			content.maxshield += lvlamount*5+content.lvl^2
+			content.maxhealth += lvlamount * 10 + content.lvl ^ 2
+			content.maxshield += lvlamount * 5 + content.lvl ^ 2
 			content.health = content.maxhealth
 			content.shield = content.maxshield
 			return 1
@@ -95,14 +115,8 @@ bot.on('message', (message) => {
 		content.encounter.maxhealth = hp
 		content.encounter.lvl = lvl
 		// output to char
-		embed.setTitle("New Encounter").setColor(c_special).setURL(message.author.avatarURL)
-		.addField("🏷 Name", name, true)
-		.addField('⭐ Level', lvl, true)
-		.addField('\u200b', '\u200b', true)
-		.addField("🗡 Attack", atk, true)
-		.addField("🛡 Defense", def, true)
-		.addField("💕 Health", hp + " / " + hp, true)
-		message.channel.sendEmbed(embed)
+		embed.setTitle("New Encounter").setColor(c_special).setURL(message.author.avatarURL).addField("🏷 Name", name, true).addField('⭐ Level', lvl, true).addField('\u200b', '\u200b', true).addField("🗡 Attack", atk, true).addField("🛡 Defense", def, true).addField("💕 Health", hp + " / " + hp, true)
+		message.channel.send({embed})
 	}
 
 	//global vars
@@ -156,7 +170,7 @@ bot.on('message', (message) => {
 
 			embed.setTitle("Profile created!").setColor(c_good)
 		}
-		message.channel.sendEmbed(embed)
+		message.channel.send({embed})
 		return
 	}
 
@@ -164,33 +178,19 @@ bot.on('message', (message) => {
 	if (message.content.startsWith("++")) {
 		if (!db[player]) {
 			embed.setTitle("You dont have a profile. Please use ``++start``").setColor(c_warning)
-			message.channel.sendEmbed(embed)
+			message.channel.send({embed})
 			return
 		}
 	}
 
 	if (message.content === "++rpg") {
-		embed.setTitle("RPG Help").setURL(message.author.avatarURL)
-		.setDescription("This is a small RPG made by Zer0 in a Cyberpunk universe, currently under development.")
-		.addField("++rpg", "Displays this message")
-		.addField("++start","Creates a profile")
-		.addField("++profile | ++p", "Shows your profile")
-		.addField("++attack | ++a","Attacks the enemy. If the enemy is not present, it will generate a new encounter")
-		.addField("++heal | ++h","Heals 25hp for 100 credits")
-		message.channel.sendEmbed(embed)
+		embed.setTitle("RPG Help").setURL(message.author.avatarURL).setDescription("This is a small RPG made by Zer0 in a Cyberpunk universe, currently under development.").addField("++rpg", "Displays this message").addField("++start", "Creates a profile").addField("++profile | ++p", "Shows your profile").addField("++attack | ++a", "Attacks the enemy. If the enemy is not present, it will generate a new encounter").addField("++heal | ++h", "Heals 25hp for 100 credits")
+		message.channel.send({embed})
 	}
 	// RPG Profile
 	if (message.content.startsWith("++profile") || message.content.startsWith("++p")) {
-		embed.setTitle(message.author.username + "'s Profile").setColor(c_note).setURL(message.author.avatarURL)
-		.addField("⭐ Level", content.lvl, true)
-		.addField("✨ Experience", content.exp, true)
-		.addField("💳 Credits", content.credits, true)
-		.addField("💕 Health", content.health + " / " + content.maxhealth, true)
-		.addField("💠 Shield", content.shield + " / " + content.maxshield, true)
-		.addField("Str/Eva/Def", content.strength + " / " + content.evasion + " / " + content.defense, true)
-		.addField("🏷 Class", content.class, false)
-		.addField("🔫 Weapon", content.weapon, false)
-		message.channel.sendEmbed(embed)
+		embed.setTitle(message.author.username + "'s Profile").setColor(c_note).setURL(message.author.avatarURL).addField("⭐ Level", content.lvl, true).addField("✨ Experience", content.exp, true).addField("💳 Credits", content.credits, true).addField("💕 Health", content.health + " / " + content.maxhealth, true).addField("💠 Shield", content.shield + " / " + content.maxshield, true).addField("Str/Eva/Def", content.strength + " / " + content.evasion + " / " + content.defense, true).addField("🏷 Class", content.class, false).addField("🔫 Weapon", content.weapon, false)
+		message.channel.send({embed})
 		return
 	}
 
@@ -216,32 +216,24 @@ bot.on('message', (message) => {
 				let explost = Math.floor(content.exp / 100 * 2) * -1 //loose 2%
 				content.health = Math.floor(content.maxhealth / 100 * 50) //get 50% health back
 				if (expChange(explost) === -1 && explos > 0) {
-					embed
-					.addField("⭐ You lost a level", "Current level " + content.lvl)
+					embed.addField("⭐ You lost a level", "Current level " + content.lvl)
 				}
-				embed.setTitle("✝ You died!").setColor(c_bad).setURL(message.author.avatarURL)
-				.addField("✨ You lost 2% of your exp", "💕 You got 50% of your health back")
+				embed.setTitle("✝ You died!").setColor(c_bad).setURL(message.author.avatarURL).addField("✨ You lost 2% of your exp", "💕 You got 50% of your health back")
 
 			} else if (content.encounter.health <= 0) {
 				// enemy killed
 				let creditsgot = content.encounter.maxhealth + content.encounter.defense * 2 + content.encounter.attack * 2 + content.encounter.lvl * 5
 				content.credits += creditsgot
 				let expgot = rand(Math.pow(content.encounter.lvl + 10, 1.2), Math.pow(content.encounter.lvl + 10, 1.3))
-				embed.setTitle("You killed " + content.encounter.name).setColor(c_good).setURL(message.author.avatarURL)
-				.addField("💥 Damage given " + dmgGiven, "👽 Health " + content.encounter.health + " / " + content.encounter.maxhealth)
-				.addField("🗡 Damage took " + dmgTaken, "💠 Shield " + content.shield + " / " + content.maxshield + " | 💕 Health " + content.health + " / " + content.maxhealth)
-				.addField("✨ Experience +" + expgot, "💳 Credits +" + creditsgot)
+				embed.setTitle("You killed " + content.encounter.name).setColor(c_good).setURL(message.author.avatarURL).addField("💥 Damage given " + dmgGiven, "👽 Health " + content.encounter.health + " / " + content.encounter.maxhealth).addField("🗡 Damage took " + dmgTaken, "💠 Shield " + content.shield + " / " + content.maxshield + " | 💕 Health " + content.health + " / " + content.maxhealth).addField("✨ Experience +" + expgot, "💳 Credits +" + creditsgot)
 				if (expChange(expgot) === 1) {
-					embed
-					.addField("⭐ You leveld up!", "Current level " + content.lvl)
+					embed.addField("⭐ You leveld up!", "Current level " + content.lvl)
 				}
 			} else {
 				//normal attack
-				embed.setTitle("Attacked " + content.encounter.name).setColor(c_special).setURL(message.author.avatarURL)
-				.addField("🔫 Damage given " + dmgGiven, "👽 Health " + content.encounter.health + " / " + content.encounter.maxhealth)
-				.addField("🗡 Damage took " + dmgTaken, "💠 Shield " + content.shield + " / " + content.maxshield + " | 💕 Health " + content.health + " / " + content.maxhealth)
+				embed.setTitle("Attacked " + content.encounter.name).setColor(c_special).setURL(message.author.avatarURL).addField("🔫 Damage given " + dmgGiven, "👽 Health " + content.encounter.health + " / " + content.encounter.maxhealth).addField("🗡 Damage took " + dmgTaken, "💠 Shield " + content.shield + " / " + content.maxshield + " | 💕 Health " + content.health + " / " + content.maxhealth)
 			}
-			message.channel.sendEmbed(embed)
+			message.channel.send({embed})
 		}
 	}
 
@@ -258,13 +250,12 @@ bot.on('message', (message) => {
 			// heal
 			content.health += heal
 			if (content.health > content.maxhealth) {
-				heal = content.maxhealth-content.health
+				heal = content.maxhealth - content.health
 				content.health = content.maxhealth
 			}
-			embed.setTitle("Healed! (💕 +" + heal + ") " + content.health + " / " + content.maxhealth).setColor(c_good)
-			.setDescription("Cost: 💳 " + cost)
+			embed.setTitle("Healed! (💕 +" + heal + ") " + content.health + " / " + content.maxhealth).setColor(c_good).setDescription("Cost: 💳 " + cost)
 		}
-		message.channel.sendEmbed(embed)
+		message.channel.send({embed})
 	}
 
 })

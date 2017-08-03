@@ -5,9 +5,9 @@ exports.run = function(bot, message, args) {
             req.client.post('statuses/update', {
                 status: tweetbody
             }, function(error, tweet, response) {
-                message.channel.sendMessage('Sucessfully tweeted:"' + tweetbody + '" to: https://twitter.com/OverSwiss')
+                message.channel.send('Sucessfully tweeted:"' + tweetbody + '" to: https://twitter.com/OverSwiss')
             })
         } else {
-            message.channel.sendMessage("Your tweet is longer than 140 letters. Pls shorten your tweet.")
+            message.channel.send("Your tweet is longer than 140 letters. Pls shorten your tweet.")
         }
 }

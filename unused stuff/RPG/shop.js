@@ -12,8 +12,8 @@ exports.run = function(bot, message, args) {
             }
             m += `#========================#`
             m += "```"
-            message.channel.sendMessage(m)
+            message.channel.send(m)
         } else {
-            message.channel.sendMessage("You have to choose a class first. Type ``-class`` to see all classes.")
+            message.channel.send("You have to choose a class first. Type ``-class`` to see all classes.")
         }
 }

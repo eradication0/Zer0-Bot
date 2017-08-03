@@ -18,5 +18,5 @@ exports.run = function(bot, message, args) {
         m += `+ daily reset is everyday at 12:00 UTC+01:00\n`
         m += `#============================#`
         m += "```"
-        message.channel.sendMessage(m)
+        message.channel.send(m)
 }

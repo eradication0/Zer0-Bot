@@ -4,7 +4,7 @@ exports.run = function(bot, message, args) {
         for (i in req.db[message.author.id].inventory) {
             if (req.db[message.author.id].inventory[i] === "-") {
                 req.db[message.author.id].inventory[i] = message.content.slice(10)
-                message.channel.sendMessage(`gave 1 of ${message.content.slice(10)}`)
+                message.channel.send(`gave 1 of ${message.content.slice(10)}`)
                 return
             }
         }

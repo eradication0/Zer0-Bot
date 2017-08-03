@@ -2,8 +2,8 @@ exports.run = function(bot, message, args) {
 	var req = require('../bot.js');
         let battletag = message.content.slice(7)
         let url = 'https://api.lootbox.eu/pc/eu/' + battletag.replace('#', '-') + '/quick-play/allHeroes/'
-        message.channel.sendMessage(url)
-        message.channel.sendMessage('loading from DB...')
+        message.channel.send(url)
+        message.channel.send('loading from DB...')
         req.request({
             url: url,
             json: true
@@ -30,7 +30,7 @@ exports.run = function(bot, message, args) {
                 m += `-Silver Medals: ${body.MedalsSilver}\n`
                 m += `-Bronze Medals: ${body.MedalsBronze}\n`
                 m += '```'
-                message.channel.sendMessage(m)
+                message.channel.send(m)
             }
         })
 }

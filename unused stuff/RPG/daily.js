@@ -16,8 +16,8 @@ exports.run = function(bot, message, args) {
             m += `# Exp: +${dailyexp}\n`
             m += `#=================================#`
             m += "```"
-            message.channel.sendMessage(m)
+            message.channel.send(m)
         } else {
-            message.channel.sendMessage("You already collected your dailies!")
+            message.channel.send("You already collected your dailies!")
         }
 }

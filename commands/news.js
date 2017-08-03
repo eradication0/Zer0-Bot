@@ -7,10 +7,10 @@ exports.run = function(bot, message, args, discord) {
 		if (message.member.roles.get(RoleToFind)) {
 			message.member.removeRole(RoleToFind)
 			embed.setTitle('Role removed').setColor('#E54C4C')
-			message.channel.sendEmbed(embed)
+			message.channel.send({ embed });
 		} else {
 			message.member.addRole(RoleToFind)
 			embed.setTitle('Role added').setColor('#6DC066')
-			message.channel.sendEmbed(embed)
+			message.channel.send({ embed });
 		}
 }

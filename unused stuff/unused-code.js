@@ -2,7 +2,7 @@ profilecheck = (authorid, msg) => {
 	if (db[authorid]) {
 		return true
 	} else {
-		msg.channel.sendMessage("You don't have a profile. Type ``-create`` to create one.")
+		msg.channel.send("You don't have a profile. Type ``-create`` to create one.")
 		return false
 	}
 },

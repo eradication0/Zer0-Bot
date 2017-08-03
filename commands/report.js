@@ -22,17 +22,17 @@ exports.run = function(bot, message, args, discord, settings) {
 
 	if (args.length < 2) {
 		embed.setTitle('Wrong amount of arguments. Usage: "' + settings.prefix + 'report @user <reason>"').setColor('#E54C4C')
-		message.channel.sendEmbed(embed)
+		message.channel.send({ embed });
 	} else {
 		let regex = /(<)+(@)/
 		if (!args[0].match(regex)) {
 			embed.setTitle('You did not mention a user. Usage: "' + settings.prefix + 'report @user <reason>"').setColor('#E54C4C')
-			message.channel.sendEmbed(embed)
+			message.channel.send({ embed });
 		} else {
 
 			if (reported === reporter) {
 				embed.setTitle('You cant report yourself :^)')
-				message.channel.sendEmbed(embed)
+				message.channel.send({ embed });
 				return
 			}
 
@@ -55,7 +55,7 @@ exports.run = function(bot, message, args, discord, settings) {
 
 			// Response
 			embed.setTitle('Your #' + reports[reporter].created + ' report was created. Reported subject now have ' + reports[reported].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
-			message.channel.sendEmbed(embed)
+			message.channel.send({ embed });
 
 			// Embed logging
 			let totalRecieved = 0
@@ -73,7 +73,7 @@ exports.run = function(bot, message, args, discord, settings) {
 			.setColor('#8BAFD8')
 			.setTitle('Report #' + totalRecieved)
 			.setDescription(reportReason)
-			bot.channels.get('309601440685359104').sendEmbed(logEmbed)
+			bot.channels.get('309601440685359104').send({logEmbed})
 		}
 	}
 }

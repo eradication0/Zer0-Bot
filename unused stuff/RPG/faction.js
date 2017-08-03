@@ -15,7 +15,7 @@ exports.run = function(bot, message, args) {
         m += `# you can choose your faction only Once!\n`
         m += `#=================================#`
         m += "```"
-        message.channel.sendMessage(m)
+        message.channel.send(m)
     }
 
 
@@ -27,12 +27,12 @@ exports.run = function(bot, message, args) {
 			return;
 			console.log("tru 3")
 		if (req.db[message.author.id].faction === "none") {
-			message.channel.sendMessage(`You are now a member of ${message.content.slice(9)}`)
+			message.channel.send(`You are now a member of ${message.content.slice(9)}`)
 			req.db[message.author.id].faction = message.content.slice(9)
 			req.jsonfile.writeFile(req.dbpath, req.db)
 			console.log("tru 4")
 		} else {
 			console.log("tru 5")
-			message.channel.sendMessage("You already choose your faction.")
+			message.channel.send("You already choose your faction.")
 		}
 }

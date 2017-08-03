@@ -24,5 +24,5 @@ exports.run = function(bot, message, args, discord) {
 		"Very doubtful"
 	]
 	var item = answers[Math.floor(Math.random() * answers.length)];
-	message.channel.sendMessage("** ( ‾ʖ̫‾)つ──☆*:・ﾟ **" + item)
+	message.channel.send("** ( ‾ʖ̫‾)つ──☆*:・ﾟ **" + item)
 }

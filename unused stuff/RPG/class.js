@@ -18,18 +18,18 @@ exports.run = function(bot, message, args) {
         m += `# You can choose your class only Once!\n`
         m += `#===========================#`
         m += "```"
-        message.channel.sendMessage(m)
+        message.channel.send(m)
     }
 
     if (message.content.startsWith('-class') && message.content.slice(7) in req.cls) {
         if (!profilecheck(message.author.id, message))
             return;
         if (req.db[message.author.id].charclass === "none") {
-            message.channel.sendMessage(`You selected class ${message.content.slice(7)}`)
+            message.channel.send(`You selected class ${message.content.slice(7)}`)
             req.db[message.author.id].charclass = message.content.slice(7)
             req.jsonfile.writeFile(req.dbpath, req.db)
         } else {
-            message.channel.sendMessage("You already choose your class.")
+            message.channel.send("You already choose your class.")
         }
     }
 }

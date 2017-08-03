@@ -3,9 +3,9 @@ exports.run = function(bot, message, args) {
         if (!req.db[message.author.id]) {
             req.db[message.author.id] = req.newuser
             req.fs.writeFile(req.dbpath, JSON.stringify(req.db))
-            message.channel.sendMessage("New profile created!")
+            message.channel.send("New profile created!")
             console.log('new profile created!')
         } else {
-            message.channel.sendMessage('You already have a profile.')
+            message.channel.send('You already have a profile.')
         }
 }

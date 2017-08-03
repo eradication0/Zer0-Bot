@@ -13,7 +13,7 @@ exports.run = function(bot, message, args, discord) {
 	//check if user already have a profile
 	if (db[player]) {
 		embed.setTitle("You already have a profile.")
-		message.channel.sendEmbed(embed)
+		message.channel.send({embed})
 	} else {
 		//create profile
 		db[player] = {}
@@ -31,6 +31,6 @@ exports.run = function(bot, message, args, discord) {
 		db[player].class = "rookie";
 
 		embed.setTitle("Pofile created!").setColor('#6DC066')
-		message.channel.sendEmbed(embed)
+		message.channel.send({embed})
 	}
 }

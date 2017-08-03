@@ -4,6 +4,6 @@ exports.run = function(bot, message, args) {
         for (i in req.db) {
             req.db[i].daily = 0
         }
-        message.channel.sendMessage("daily reset!")
+        message.channel.send("daily reset!")
     }
 }

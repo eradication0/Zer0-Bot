@@ -16,5 +16,5 @@ exports.run = function(bot, message, args) {
         m += `+ Exp: ${exp}\n`
         m += `#===========================#`
         m += "```"
-        message.channel.sendMessage(m)
+        message.channel.send(m)
 }

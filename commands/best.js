@@ -19,6 +19,6 @@ exports.run = function(bot, message, args, discord, settings) {
 		if (i === 6) { break }
 	}
 
-	message.channel.sendEmbed(embed)
+	message.channel.send({ embed });
 
 }

@@ -7,6 +7,7 @@ const urban = require('relevant-urban');
 const fs = require('fs');
 const bot = new discord.Client();
 const rand = require('random-int')
+const settings = require('./settings.json')
 
 bot.on('message', message => {
     if (message.author !== bot.user)
@@ -15,18 +16,18 @@ bot.on('message', message => {
     if (message.cleanContent.startsWith("💻"))
         try {
             const com = eval(message.content.slice(2))
-            message.channel.sendMessage("✅ " + com)
+            message.channel.send("✅ " + com)
         } catch (err) {
-            message.channel.sendMessage("❌" + err)
+            message.channel.send("❌" + err)
         }
 
     if (message.content.startsWith("🍪")) {
-        message.channel.sendMessage("✅ Zer0 gave a cookie to **(っ◔◡◔)っ :cookie:** " + message.content.slice(2))
+        message.channel.send("✅ Zer0 gave a cookie to **(っ◔◡◔)っ :cookie:** " + message.content.slice(2))
     }
 
     if (message.content.startsWith("🌐")) {
         urban(message.content.slice(2)).then((result) => {
-            message.channel.sendMessage("✅ **Definition: **" + result.definition)
+            message.channel.send("✅ **Definition: **" + result.definition)
         })
     }
 
@@ -55,26 +56,26 @@ bot.on('message', message => {
             "Very doubtful"
         ]
         var item = answers[Math.floor(Math.random() * answers.length)];
-        message.channel.sendMessage("✅ ** ( ‾ʖ̫‾)つ──☆*:・ﾟ **" + item)
+        message.channel.send("✅ ** ( ‾ʖ̫‾)つ──☆*:・ﾟ **" + item)
     }
 
     if (message.content.startsWith("🎲")) {
 
         if (message.content.startsWith("🎲 odds")) {
-            message.channel.sendMessage("⚫⚫⚫⚫-🔴🔴🔴🔴-🔵🔵")
+            message.channel.send("⚫⚫⚫⚫-🔴🔴🔴🔴-🔵🔵")
             return
         }
 
 		if (message.content.startsWith("🎲 global")) {
 			let rand = Math.trunc(Math.random() * 100)
 			if (rand < 69 ) {
-				message.channel.sendMessage("✝ Lost! You rolled a "+ rand +". **" + db.globalpot + "** coins in Globalpot. ✝")
+				message.channel.send("✝ Lost! You rolled a "+ rand +". **" + db.globalpot + "** coins in Globalpot. ✝")
 				return
 			} else if (rand > 80) {
-				message.channel.sendMessage("✝ Lost! You rolled a "+ rand +". **" + db.globalpot + "** coins in Globalpot. ✝")
+				message.channel.send("✝ Lost! You rolled a "+ rand +". **" + db.globalpot + "** coins in Globalpot. ✝")
 				return
 			} else {
-				message.channel.sendMessage("🔥🔥🔥 Just snagged the global pot with a " + rand + " ROLL. Won " + db.globalpot + "coins 🔥🔥🔥")
+				message.channel.send("🔥🔥🔥 Just snagged the global pot with a " + rand + " ROLL. Won " + db.globalpot + "coins 🔥🔥🔥")
 				return
 			}
 			return
@@ -85,20 +86,20 @@ bot.on('message', message => {
 		let pot = parseInt(args[2])
 
 		if (args.length === 1) {
-			message.channel.sendMessage("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
+			message.channel.send("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
 			return
 		} else if (args.length === 2) {
-			message.channel.sendMessage("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
+			message.channel.send("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
 			return
 		}
 
 		if (pot > db.coins) {
-			message.channel.sendMessage("❌ Not enough 💰")
+			message.channel.send("❌ Not enough 💰")
 			return
 		}
 
 		if (db.coin === 0) {
-			channel.message.sendMessage("You dont have any money :(")
+			channel.message.send("You dont have any money :(")
 			return
 		}
 
@@ -113,7 +114,7 @@ bot.on('message', message => {
             test()
             return
         } else {
-            message.channel.sendMessage("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
+            message.channel.send("❌ **Usage:*** 🎲 <black/red/blue> <amount>")
             return
         }
 
@@ -121,34 +122,34 @@ bot.on('message', message => {
             if (rand <= 40) {
                 if (args[1] === "black") {
                     db.coins = db.coins + pot
-                    message.channel.sendMessage("⚫ you won! current balance **" + db.coins + "**")
+                    message.channel.send("⚫ you won! current balance **" + db.coins + "**")
 
                 } else {
                     db.coins = db.coins - pot
 					db.globalpot = db.globalpot + pot
-                    message.channel.sendMessage("⚫ you lost! current balance **" + db.coins + "**")
+                    message.channel.send("⚫ you lost! current balance **" + db.coins + "**")
 
                 }
             } else if (rand <= 80) {
                 if (args[1] === "red") {
                     db.coins = db.coins + pot
-                    message.channel.sendMessage("🔴 you won! current balance **" + db.coins + "**")
+                    message.channel.send("🔴 you won! current balance **" + db.coins + "**")
 
                 } else {
                     db.coins = db.coins - pot
 					db.globalpot = db.globalpot + pot
-                    message.channel.sendMessage("🔴 you lost! current balance **" + db.coins + "**")
+                    message.channel.send("🔴 you lost! current balance **" + db.coins + "**")
 
                 }
             } else if (rand <= 100) {
                 if (args[1] === "blue") {
                     db.coins = db.coins + pot * 2
-                    message.channel.sendMessage("🔵 you won! current balance **" + db.coins + "**")
+                    message.channel.send("🔵 you won! current balance **" + db.coins + "**")
 
                 } else {
                     db.coins = db.coins - pot
 					db.globalpot = db.globalpot + pot
-                    message.channel.sendMessage("🔵 you lost! current balance **" + db.coins + "**")
+                    message.channel.send("🔵 you lost! current balance **" + db.coins + "**")
                 }
             }
             fs.writeFile(dbPath, JSON.stringify(db))
@@ -156,11 +157,11 @@ bot.on('message', message => {
     }
 
 	if (message.content.startsWith("💰")) {
-		message.channel.sendMessage("✅ You have " + db.coins)
+		message.channel.send("✅ You have " + db.coins)
 	}
 
 });
 
 console.log('<== ONLINE ==>');
 
-bot.login("NjQ0Mzg0NTQ3NTAwMzE4NzI.CpdQfw.R_65TGcJPOzJALkYkZ3US8RkbI8")
+bot.login(settings.selfbot)
