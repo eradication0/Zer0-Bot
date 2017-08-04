@@ -42,9 +42,10 @@ bot.on('presenceUpdate', (memberOld, member) => {
 				console.log(member.user.username + " already got role " + settings.roles[i].name)
 				return
 			} else {
+				console.log(member.user.username + " got a new role: " + settings.roles[i].name)
 				member.addRole(RoleToFind)
 				bot.channels.get('313659722093821952').send(member.user.username + " got a new role: " + settings.roles[i].name)
-				console.log(member.user.username + " got a new role: " + settings.roles[i].name)
+
 				return
 			}
 		}
