@@ -17,13 +17,12 @@ dbBackup = () => {
 		fs.writeFileSync(dbPath, JSON.stringify(db))
 		dbBackup()
 		let time = new Date()
-		//console.log("RPG DB Backuped √ " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " " + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
+		console.log("RPG DB Backuped √ " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " " + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
 	}, 30000); //backup interval
 }
 dbBackup()
 
 // listeners
-
 // add role on guild join
 bot.on('guildMemberAdd', member => {
 	if (member.guild.roles.has("308864141886619648")) {
@@ -39,13 +38,11 @@ bot.on('presenceUpdate', (memberOld, member) => {
 		if (member.presence.game.name === settings.roles[i].name && member.guild.id === "134436989175988224") {
 			let RoleToFind = settings.roles[i].id;
 			if (member.roles.get(RoleToFind)) {
-				console.log(member.user.username + " already got role " + settings.roles[i].name)
 				return
 			} else {
 				console.log(member.user.username + " got a new role: " + settings.roles[i].name)
 				member.addRole(RoleToFind)
 				bot.channels.get('313659722093821952').send(member.user.username + " got a new role: " + settings.roles[i].name)
-
 				return
 			}
 		}
@@ -73,9 +70,7 @@ bot.on('message', (message) => {
 	} catch (err) {}
 
 	// RPG STUFF --------------------
-
 	// new encounter
-
 	expChange = (exp) => {
 		let currentlvl = content.lvl
 		content.lvl = Math.floor(Math.log(Math.pow(exp, 2)) / Math.log(10))
@@ -97,8 +92,8 @@ bot.on('message', (message) => {
 		}
 	}
 	newEncounter = () => {
-
 		content.shield = content.maxshield
+
 		// generate enemy
 		let lvl = rand(content.lvl - 4, content.lvl + 4)
 		if (lvl <= 0) {
@@ -115,6 +110,7 @@ bot.on('message', (message) => {
 		content.encounter.health = hp
 		content.encounter.maxhealth = hp
 		content.encounter.lvl = lvl
+
 		// output to char
 		embed.setTitle("New Encounter").setColor(c_special).setURL(message.author.avatarURL).addField("🏷 Name", name, true).addField('⭐ Level', lvl, true).addField('\u200b', '\u200b', true).addField("🗡 Attack", atk, true).addField("🛡 Defense", def, true).addField("💕 Health", hp + " / " + hp, true)
 		message.channel.send({embed})
@@ -126,9 +122,9 @@ bot.on('message', (message) => {
 	let c_warning = "#ECBE00"
 	let c_note = "#006FEC"
 	let c_special = "#ba00ec"
-
 	let player = message.author.id
 	const embed = new discord.RichEmbed()
+
 	//check for custom nickname
 	if (player.startsWith("!")) {
 		player = player.slice(1)
@@ -137,6 +133,7 @@ bot.on('message', (message) => {
 
 	// RPG START
 	if (message.content.startsWith("++start")) {
+
 		//check if user already have a profile
 		if (db[player]) {
 			embed.setTitle("You already have a profile.")
@@ -213,6 +210,7 @@ bot.on('message', (message) => {
 			}
 			content.encounter.health += dmgGiven * -1
 			if (content.health <= 0) {
+
 				// died
 				let explost = Math.floor(content.exp / 100 * 2) * -1 //loose 2%
 				content.health = Math.floor(content.maxhealth / 100 * 50) //get 50% health back
@@ -222,6 +220,7 @@ bot.on('message', (message) => {
 				embed.setTitle("✝ You died!").setColor(c_bad).setURL(message.author.avatarURL).addField("✨ You lost 2% of your exp", "💕 You got 50% of your health back")
 
 			} else if (content.encounter.health <= 0) {
+
 				// enemy killed
 				let creditsgot = content.encounter.maxhealth + content.encounter.defense * 2 + content.encounter.attack * 2 + content.encounter.lvl * 5
 				content.credits += creditsgot
@@ -231,6 +230,7 @@ bot.on('message', (message) => {
 					embed.addField("⭐ You leveld up!", "Current level " + content.lvl)
 				}
 			} else {
+
 				//normal attack
 				embed.setTitle("Attacked " + content.encounter.name).setColor(c_special).setURL(message.author.avatarURL).addField("🔫 Damage given " + dmgGiven, "👽 Health " + content.encounter.health + " / " + content.encounter.maxhealth).addField("🗡 Damage took " + dmgTaken, "💠 Shield " + content.shield + " / " + content.maxshield + " | 💕 Health " + content.health + " / " + content.maxhealth)
 			}
@@ -242,12 +242,15 @@ bot.on('message', (message) => {
 		let cost = 100
 		let heal = 25
 		if (content.credits < cost) {
+
 			// not enough credits
 			embed.setTitle("Not enough Credits, you need at least 💳" + cost).setColor(c_bad)
 		} else if (content.health === content.maxhealth) {
+
 			// full life
 			embed.setTitle("You are already full 💕 Health").setColor(c_warning)
 		} else {
+
 			// heal
 			content.health += heal
 			if (content.health > content.maxhealth) {
@@ -258,7 +261,6 @@ bot.on('message', (message) => {
 		}
 		message.channel.send({embed})
 	}
-
 })
 
 // login
