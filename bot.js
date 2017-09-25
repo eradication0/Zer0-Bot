@@ -194,7 +194,7 @@ bot.on('message', (message) => {
 
 	// RPG Attack
 	if (message.content.startsWith("++attack") || message.content.startsWith("++a")) {
-		if (content.encounter.health <= 0) {
+		if (content.encounter.health <= 0) { 
 			newEncounter()
 			return
 		} else {

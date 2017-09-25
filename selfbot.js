@@ -21,16 +21,19 @@ bot.on('message', message => {
             message.channel.send("❌" + err)
         }
 
-    if (message.content.startsWith("🍪")) {
-        message.channel.send("✅ Zer0 gave a cookie to **(っ◔◡◔)っ :cookie:** " + message.content.slice(2))
-    }
-
     if (message.content.startsWith("🌐")) {
         urban(message.content.slice(2)).then((result) => {
             message.channel.send("✅ **Definition: **" + result.definition)
         })
     }
-}
+
+	if (message.content.startsWith("🍪")) {
+		let runCMD = require('./command.js')
+		message.channel.send("1. MAIN FILE: you have **" + db.cookies + "** cookies")
+		runCMD.run(message, db)
+		message.channel.send("4. MAIN FILE: you have **" + db.cookies + "** cookies")
+	}
+})
 
 console.log('<== ONLINE ==>');
 

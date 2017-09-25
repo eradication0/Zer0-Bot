@@ -4,20 +4,22 @@ exports.run = function(bot, message, args, discord, settings) {
 	const fs = require('fs')
 	const embed = new discord.RichEmbed()
 
-	let reporter = message.author.id
-	if (reporter.startsWith("!")) {
-		reporter = reporter.slice(1)
+
+	// giver ID
+	let giver = message.author.id
+	if (giver.startsWith("!")) {
+		giver = giver.slice(1)
 	}
 
-	let reported = ""
-
+	// reciever ID
+	let reciever = ""
 	if (args[0].charAt(3) === '!') {
-		reported = args[0].slice(3,-1)
+		reciever = args[0].slice(3,-1)
 	} else {
-		reported = args[0].slice(2,-1)
+		reciever = args[0].slice(2,-1)
 	}
-	if (reported.startsWith("!")) {
-		reported = reported.slice(1)
+	if (reciever.startsWith("!")) {
+		reciever = reciever.slice(1)
 	}
 
 	if (args.length < 2) {
@@ -29,32 +31,40 @@ exports.run = function(bot, message, args, discord, settings) {
 			embed.setTitle('You did not mention a user. Usage: "' + settings.prefix + 'report @user <reason>"').setColor('#E54C4C')
 			message.channel.send({ embed });
 		} else {
-
-			if (reported === reporter) {
+			if (reciever === giver) {
 				embed.setTitle('You cant report yourself :^)')
 				message.channel.send({ embed });
 				return
 			}
-
-			if (!reports[reported]) {
-				reports[reported] = {"created":0,"recieved":0}
-				reports[reported].id = reported;
+			if (!reports[reciever]) {
+				reports[reciever] = {"rep":0,"cooldown":0}
+				reports[reciever].id = reciever;
 			}
-
-			if (!reports[reporter]) {
-				reports[reporter] = {"created":0,"recieved":0}
-				reports[reporter].id = reporter;
+			if (!reports[giver]) {
+				reports[giver] = {"rep":0,"cooldown":0}
+				reports[giver].id = giver;
 			}
-
 			// Database write
-			let createdCount = reports[reporter].created + 1
-			let recievedCount = reports[reported].recieved + 1
-			reports[reported].recieved = recievedCount;
-			reports[reporter].created = createdCount;
+			let createdCount = reports[giver].created + 1
+			let recievedCount = reports[reciever].recieved + 1
+			reports[reciever].recieved = recievedCount;
+			reports[giver].given = createdCount;
 			fs.writeFile(reportsPath, JSON.stringify(reports))
 
+
+
+
+
+
+
+
+
+
+
+
+
 			// Response
-			embed.setTitle('Your #' + reports[reporter].created + ' report was created. Reported subject now have ' + reports[reported].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
+			embed.setTitle('Your #' + reports[giver].created + ' report was created. reciever subject now have ' + reports[reciever].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
 			message.channel.send({ embed });
 
 			// Embed logging
@@ -73,7 +83,7 @@ exports.run = function(bot, message, args, discord, settings) {
 			.setColor('#8BAFD8')
 			.setTitle('Report #' + totalRecieved)
 			.setDescription(reportReason)
-			bot.channels.get('309601440685359104').send({logEmbed})
+			bot.channels.get('309601440685359104').send({embed: logEmbed})
 		}
 	}
 }
