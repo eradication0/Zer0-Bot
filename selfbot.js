@@ -33,6 +33,14 @@ bot.on('message', message => {
 		runCMD.run(message, db)
 		message.channel.send("4. MAIN FILE: you have **" + db.cookies + "** cookies")
 	}
+
+	if (message.content.startsWith("*coding")) {
+		message.channel.send("༺Trust me its not hard :ok_hand:༻")
+	}
+
+	if (message.content.startsWith("*qawa")) {
+		message.channel.send("༺is a cutie༻")
+	}
 })
 
 console.log('<== ONLINE ==>');

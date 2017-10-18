@@ -10,6 +10,7 @@ const db = require('./rpg.json')
 const def = require('./rpgDef.json')
 const dbPath = './rpg.json'
 const enemynames = fs.readFileSync('./enemynames.txt').toString().split("\n");
+const roles = require('./roles.json')
 
 // db backup
 dbBackup = () => {
@@ -18,7 +19,7 @@ dbBackup = () => {
 		dbBackup()
 		let time = new Date()
 		console.log("RPG DB Backuped √ " + time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds() + " " + time.getDate() + "/" + time.getMonth() + "/" + time.getFullYear())
-	}, 30000); //backup interval
+	}, 300000); //backup interval
 }
 dbBackup()
 
@@ -34,15 +35,14 @@ bot.on('presenceUpdate', (memberOld, member) => {
 	if (member.presence.game === null) {
 		return
 	}
-	for (var i in settings.roles) {
-		if (member.presence.game.name === settings.roles[i].name && member.guild.id === "134436989175988224") {
-			let RoleToFind = settings.roles[i].id;
-			if (member.roles.get(RoleToFind)) {
+	for (var i in roles) {
+		if (member.presence.game.name === roles[i].fullName && member.guild.id === "134436989175988224") {
+			if (member.roles.get(roles[i].id)) {
 				return
 			} else {
-				console.log(member.user.username + " got a new role: " + settings.roles[i].name)
-				member.addRole(RoleToFind)
-				bot.channels.get('313659722093821952').send(member.user.username + " got a new role: " + settings.roles[i].name)
+				console.log(member.user.username + " got a new role: " + roles[i].fullName)
+				member.addRole(roles[i].id)
+				bot.channels.get('313659722093821952').send(member.user.username + " got a new role: " + roles[i].fullName)
 				return
 			}
 		}
@@ -68,6 +68,24 @@ bot.on('message', (message) => {
 		let cmdFile = require('./commands/' + command)
 		cmdFile.run(bot, message, args, discord, settings, db)
 	} catch (err) {}
+
+
+	// give roles if nothing happend so far
+
+	for (var I in roles) {
+		if (roles[I].name === message.content.slice(1) || roles[I].fullName === message.content.slice(1)) {
+				const embed = new discord.RichEmbed()
+			if (message.member.roles.get(roles[I].id)) {
+				message.member.removeRole(roles[I].id)
+				embed.setTitle('Role removed').setColor('#E54C4C')
+				message.channel.send({ embed });
+			} else {
+				message.member.addRole(roles[I].id)
+				embed.setTitle('Role added').setColor('#6DC066')
+				message.channel.send({ embed });
+			}
+		}
+	}
 
 	// RPG STUFF --------------------
 	// new encounter
@@ -194,7 +212,7 @@ bot.on('message', (message) => {
 
 	// RPG Attack
 	if (message.content.startsWith("++attack") || message.content.startsWith("++a")) {
-		if (content.encounter.health <= 0) { 
+		if (content.encounter.health <= 0) {
 			newEncounter()
 			return
 		} else {

@@ -3,3 +3,5 @@ firebase.json
 node_modules
 npm-debug.log
 README.md
+
+settings.json

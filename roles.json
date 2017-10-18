@@ -1,0 +1,62 @@
+{
+	"1" : {
+		"id" : "223870392148688896",
+		"name" : "ow",
+		"fullName" : "Overwatch"
+	},
+	"2" : {
+		"id" : "251348810842898433",
+		"name" : "rl",
+		"fullName" : "Rocket League"
+	},
+	"3" : {
+		"id" : "307138198608412673",
+		"name" : "cs:go",
+		"fullName" : "Counter Strike: Global Offensive"
+	},
+	"4" : {
+		"id" : "307828771065430017",
+		"name" : "pubg",
+		"fullName" : "Playerunkowns Battlegrounds"
+	},
+	"5" : {
+		"id" : "307561834880172032",
+		"name" : "hots",
+		"fullName" : "Heroes of the Storm"
+	},
+	"6" : {
+		"id" : "308873496111480832",
+		"name" : "dota",
+		"fullName" : "Dota 2"
+	},
+	"7" : {
+		"id" : "325250080724484096",
+		"name" : "r6s",
+		"fullName" : "Rainbow six Siege"
+	},
+	"8" : {
+		"id" : "329227772478226433",
+		"name" : "bdo",
+		"fullName" : "Black Desert Online"
+	},
+	"9" : {
+		"id" : "327900156189999104",
+		"name" : "d:os2",
+		"fullName" : "Divinity: Original Sin 2"
+	},
+	"10" : {
+		"id" : "308873552042393601",
+		"name" : "lol",
+		"fullName" : "League of Legends"
+	},
+	"11" : {
+		"id" : "342293968215736323",
+		"name" : "gta5",
+		"fullName" : "Grand Theft Auto 5"
+	},
+	"12" : {
+		"id" : "307142781887840256",
+		"name" : "news",
+		"fullName" : "news role"
+	}
+}
