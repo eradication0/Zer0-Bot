@@ -51,18 +51,6 @@ exports.run = function(bot, message, args, discord, settings) {
 			reports[giver].given = createdCount;
 			fs.writeFile(reportsPath, JSON.stringify(reports))
 
-
-
-
-
-
-
-
-
-
-
-
-
 			// Response
 			embed.setTitle('Your #' + reports[giver].created + ' report was created. reciever subject now have ' + reports[reciever].recieved + ' reports. Thanks for your cooperation').setColor('#6DC066')
 			message.channel.send({ embed });

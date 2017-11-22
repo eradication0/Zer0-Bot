@@ -1,8 +1,6 @@
 console.log('<== STARTING SELF BOT ==>');
 
 const discord = require('discord.js');
-const db = require('./selfbotDB.json');
-const dbPath =  'selfbotDB.json'
 const urban = require('relevant-urban');
 const fs = require('fs');
 const bot = new discord.Client();
