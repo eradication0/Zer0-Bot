@@ -21,6 +21,19 @@ let c_warning = "#ECBE00"
 let c_note = "#006FEC"
 let c_special = "#ba00ec"
 
+//global functions
+createUser = (message) => {
+	// get user id
+	let userid = message.author.id
+	if (userid.startsWith("!")) {
+		userid = userid.slice(1)
+	}
+	// check if first time user
+	if (!inv[userid]) {
+		inv[userid] = {"boxes":0,"credits":0}
+	}
+}
+
 // listeners
 // add role on guild join
 bot.on('guildMemberAdd', member => {
@@ -64,7 +77,7 @@ bot.on('message', (message) => {
 	const command = args.shift().slice(settings.prefix.length)
 	try {
 		let cmdFile = require('./commands/' + command)
-		cmdFile.run(bot, message, args, discord, settings, db)
+		cmdFile.run(bot, message, args, discord, settings, inv)
 	} catch (err) {}
 
 
@@ -85,23 +98,25 @@ bot.on('message', (message) => {
 	}
 
 	lootboxChance = () => {
-		let chance = rand(0,10);
-		if (chance === 10) {
-			const embed = new discord.RichEmbed().setTitle('🎁 Congrats you just got a Lootbox').setColor('#f0ff00')
-			message.channel.send({embed})
-		}
+		let chance = rand(0,300);
 		// get user id
 		let userid = message.author.id
 		if (userid.startsWith("!")) {
 			userid = userid.slice(1)
 		}
-		// check if first time user
-		if (!inv[userid]) {
-			inv[userid] = {"boxes":0,"credits":0}
+		//custom drop rate for snowball
+		if (userid === "139388383486017536") {
+			chance = rand(0,8000)
 		}
-		// write into database
-		inv[userid].boxes + 1
-		fs.writeFile(invPatch, JSON.stringify(inv))
+		if (chance === 69) {
+			console.log(message.author.username + "won a lootbox")
+			const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor('#f0ff00')
+			message.channel.send({embed})
+			createUser(message)
+			// write into database
+			inv[userid].boxes += 1
+			fs.writeFile(invPath, JSON.stringify(inv))
+		}
 	}
 	lootboxChance();
 
