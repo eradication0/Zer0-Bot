@@ -4,6 +4,7 @@ console.log('Starting bot..');
 const settings = require('./settings.json')
 const roles = require('./roles.json')
 const inv = require('./inventory.json')
+const invPath = 'inventory.json'
 
 //packages
 const fs = require('fs')
@@ -68,7 +69,6 @@ bot.on('message', (message) => {
 
 
 	// give roles if nothing happend so far
-
 	for (var I in roles) {
 		if (roles[I].name === message.content.slice(1) || roles[I].fullName === message.content.slice(1)) {
 				const embed = new discord.RichEmbed()
@@ -90,14 +90,18 @@ bot.on('message', (message) => {
 			const embed = new discord.RichEmbed().setTitle('🎁 Congrats you just got a Lootbox').setColor('#f0ff00')
 			message.channel.send({embed})
 		}
-		//get user id
+		// get user id
 		let userid = message.author.id
 		if (userid.startsWith("!")) {
 			userid = userid.slice(1)
 		}
+		// check if first time user
 		if (!inv[userid]) {
 			inv[userid] = {"boxes":0,"credits":0}
 		}
+		// write into database
+		inv[userid].boxes + 1
+		fs.writeFile(invPatch, JSON.stringify(inv))
 	}
 	lootboxChance();
 
