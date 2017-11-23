@@ -5,5 +5,6 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
-	
+	message.channel.send("not implemented yet")
+
 }
