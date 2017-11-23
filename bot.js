@@ -34,7 +34,7 @@ createUser = (message) => {
 	}
 }
 
-lootboxChance = () => {
+lootboxChance = (message) => {
 	let chance = rand(0,300);
 	// get user id
 	let userid = message.author.id
@@ -93,7 +93,7 @@ bot.on('message', (message) => {
 		return
 
 	// chance to get lootbox
-	lootboxChance();
+	lootboxChance(message);
 
 
 	// Bot only executes command if the right prefix is used
