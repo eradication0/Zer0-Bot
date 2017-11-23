@@ -34,6 +34,28 @@ createUser = (message) => {
 	}
 }
 
+lootboxChance = () => {
+	let chance = rand(0,300);
+	// get user id
+	let userid = message.author.id
+	if (userid.startsWith("!")) {
+		userid = userid.slice(1)
+	}
+	//custom drop rate for snowball
+	if (userid === "139388383486017536") {
+		chance = rand(0,8000)
+	}
+	if (chance === 69) {
+		console.log(message.author.username + "won a lootbox")
+		const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor('#f0ff00')
+		message.channel.send({embed})
+		createUser(message)
+		// write into database
+		inv[userid].boxes += 1
+		fs.writeFile(invPath, JSON.stringify(inv))
+	}
+}
+
 // listeners
 // add role on guild join
 bot.on('guildMemberAdd', member => {
@@ -70,6 +92,13 @@ bot.on('message', (message) => {
 	if (message.author.bot)
 		return
 
+	// chance to get lootbox
+	lootboxChance();
+
+
+	// Bot only executes command if the right prefix is used
+	if (!message.content.startsWith(settings.prefix)) return
+
 	// execute command
 	// if (message.content.startsWith(settings.prefix) === false)
 	// 	return
@@ -96,29 +125,6 @@ bot.on('message', (message) => {
 			}
 		}
 	}
-
-	lootboxChance = () => {
-		let chance = rand(0,300);
-		// get user id
-		let userid = message.author.id
-		if (userid.startsWith("!")) {
-			userid = userid.slice(1)
-		}
-		//custom drop rate for snowball
-		if (userid === "139388383486017536") {
-			chance = rand(0,8000)
-		}
-		if (chance === 69) {
-			console.log(message.author.username + "won a lootbox")
-			const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor('#f0ff00')
-			message.channel.send({embed})
-			createUser(message)
-			// write into database
-			inv[userid].boxes += 1
-			fs.writeFile(invPath, JSON.stringify(inv))
-		}
-	}
-	lootboxChance();
 
 })
 
