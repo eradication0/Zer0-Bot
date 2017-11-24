@@ -1,22 +1,22 @@
 {
 	"1":{
 		"color" : "#868686",
-		"items" : [1,2,3,4,"💩","✨ kekd","💰 1 Tatsumaki Credit von einem beliebigen User","🆗🆒"]
+		"items" : [1,2,3,4,5,6,7,8,"💩","✨ kekd","🆗🆒"]
 	},
 	"2":{
 		"color" : "#689674",
-		"items" : [5,6,7,8,"✨ Playing Status eines anderen Users für einen tag ändern"]
+		"items" : [5,6,7,8,9,10,11,12"✨ Playing Status eines anderen Users für einen tag ändern"]
 	},
 	"3":{
 		"color" : "#0066ff",
-		"items" : [10,11,12,13,"✨ Rename einen der 4 Voicechannels","✨ God mode 1 stunde"]
+		"items" : [10,11,12,13,14,15,16,17"✨ Rename einen der 4 Voicechannels","✨ God mode 1 stunde"]
 	},
 	"4":{
 		"color" : "#de00ff",
-		"items" : [30,31,32,33,"✨ Premium Mitgliedschaft/Colorchange","💰 200 Tatsumaki Credits von einem beliebigen User"]
+		"items" : [30,31,32,33,34,35,36,37,"✨ Premium Mitgliedschaft/Colorchange"]
 	},
 	"5":{
 		"color" : "#ff9c00",
-		"items" : [100,110,120,130,"UBER Mitlgiedschaft/Colorchange","'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
+		"items" : [100,110,120,130,135,140,145,150,"UBER Mitlgiedschaft/Colorchange","'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
 		}
 }
