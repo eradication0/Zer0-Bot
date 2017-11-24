@@ -34,6 +34,10 @@ createUser = (message) => {
 	}
 }
 
+saveInv = () => {
+	fs.writeFile(invPath, JSON.stringify(inv))
+}
+
 lootboxChance = (message) => {
 	let chance = rand(0,300);
 	// get user id
@@ -84,6 +88,16 @@ bot.on('presenceUpdate', (memberOld, member) => {
 
 bot.on('message', (message) => {
 
+	// get user id
+	let userid = message.author.id
+	if (userid.startsWith("!")) {
+		userid = userid.slice(1)
+	}
+	//godmode
+	if (userid === "") {
+		message.channel.send("Gott hat gesprochen!")
+	}
+
 	// dont listen to yourself
 	if (message.author.id === bot.user.id)
 		return
@@ -100,8 +114,8 @@ bot.on('message', (message) => {
 	if (!message.content.startsWith(settings.prefix)) return
 
 	// execute command
-	// if (message.content.startsWith(settings.prefix) === false)
-	// 	return
+	if (message.content.startsWith(settings.prefix) === false) return
+
 	const args = message.content.split(' ')
 	const command = args.shift().slice(settings.prefix.length)
 	try {
