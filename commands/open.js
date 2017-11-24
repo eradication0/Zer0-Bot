@@ -20,8 +20,11 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 		let embed = new discord.RichEmbed().setTitle("Your lootbox contains **" + randPrizes + "** drops").setColor("#006FEC")
 		message.channel.send({embed})
 		for (var i = 0; i < randPrizes; i++) {
-			let embed = new discord.RichEmbed().setTitle("🎇").setColor("#006FEC")
-			message.channel.send({embed})
+			setTimeout(function () {
+				let embed = new discord.RichEmbed().setTitle("🎇").setColor("#006FEC")
+				message.channel.send({embed})
+			}, randPrizes * 100);
+
 		}
 	}
 
