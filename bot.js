@@ -41,7 +41,7 @@ lootboxChance = (message) => {
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
-	-	//custom drop rate for snowball
+		//custom drop rate for snowball
 	if (userid === "73150130227781632") {
 		chance = 69
 	}
