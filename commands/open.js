@@ -5,7 +5,7 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
-
+ 
 	if (inv[userid].boxes === 0) {
 		let embed = new discord.RichEmbed().setTitle("You dont have a lootbox :^) get gud").setColor("#E54C4C")
 		message.channel.send({embed})
