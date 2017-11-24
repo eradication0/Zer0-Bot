@@ -41,6 +41,10 @@ lootboxChance = (message) => {
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
+	-	//custom drop rate for snowball
+	if (userid === "73150130227781632") {
+		chance = 69
+	}
 	if (chance === 69) {
 		console.log(message.author.username + "won a lootbox")
 		const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor(c_special)
