@@ -47,7 +47,7 @@ lootboxChance = (message) => {
 	//}
 	if (chance === 69) {
 		console.log(message.author.username + "won a lootbox")
-		const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor(c_special)
+		const embed = new discord.RichEmbed().setTitle('📦 Congrats '+message.author.username+' you just got a Lootbox').setColor('#07BEB8')
 		message.channel.send({embed})
 		createUser(message)
 		// write into database

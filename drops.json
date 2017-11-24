@@ -1,7 +1,7 @@
 {
 	"1":{
 		"color" : "#868686",
-		"items" : [1,2,3,"💩","NOTHING","1 Tatsumaki Credit von einem beliebigen User"]
+		"items" : [1,2,3,4,"💩","kekd","1 Tatsumaki Credit von einem beliebigen User"]
 	},
 	"2":{
 		"color" : "#689674",
@@ -17,7 +17,6 @@
 	},
 	"5":{
 		"color" : "#ff9c00",
-		"items" : [100,110,"UBER Mitlgiedschaft/Colorchange","'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
+		"items" : [100,110,120,130,"UBER Mitlgiedschaft/Colorchange","'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
 		}
-	}
 }
