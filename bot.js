@@ -15,11 +15,11 @@ const rand = require('random-int')
 const bot = new discord.Client()
 const embed = new discord.RichEmbed()
 
-let c_bad = "#E54C4C"
-let c_good = "#6DC066"
-let c_warning = "#ECBE00"
-let c_note = "#006FEC"
-let c_special = "#ba00ec"
+const c_bad = "#E54C4C"
+const c_good = "#6DC066"
+const c_warning = "#ECBE00"
+const c_note = "#006FEC"
+const c_special = "#ba00ec"
 
 //global functions
 createUser = (message) => {
@@ -41,13 +41,9 @@ lootboxChance = (message) => {
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
-	//custom drop rate for snowball
-	if (userid === "139388383486017536") {
-		chance = rand(0,8000)
-	}
 	if (chance === 69) {
 		console.log(message.author.username + "won a lootbox")
-		const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor('#f0ff00')
+		const embed = new discord.RichEmbed().setTitle('📦 Congrats you just got a Lootbox').setColor(c_special)
 		message.channel.send({embed})
 		createUser(message)
 		// write into database
