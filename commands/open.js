@@ -27,7 +27,7 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 			setTimeout(function () {
 				let embed = new discord.RichEmbed().setTitle("🎇").setColor("#006FEC")
 				message.channel.send({embed})
-			}, prizes * 200);
+			}, i * 200);
 		}
 	}
 }
