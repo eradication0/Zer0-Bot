@@ -1,4 +1,5 @@
 exports.run = function(bot, message, args, discord, settings, inv) {
+	console.log("heh")
 	createUser(message)
 	// get user id
 	let userid = message.author.id
