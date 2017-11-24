@@ -56,7 +56,7 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 
 			//timeout to slow down drops
 				//check if drop is a number aka credits
-				if (dropID <= 4) {
+				if (dropID <= 3) {
 					let embed = new discord.RichEmbed().setTitle("💳 " + actualDrop).setColor(drops[rarity].color)
 					inv[userid].credits += actualDrop
 					message.channel.send({embed})
