@@ -1,15 +1,18 @@
 exports.run = function(bot, message, args, discord, settings, inv) {
+
 	createUser(message)
 	// get user id
 	let userid = message.author.id
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
- 
+
 	if (inv[userid].boxes === 0) {
 		let embed = new discord.RichEmbed().setTitle("You dont have a lootbox :^) get gud").setColor("#E54C4C")
 		message.channel.send({embed})
+		return
 	} else {
+		const rand = require('random-int')
 		let randPrizes = rand(0,100)
 		let prizes = 0
 		if (randPrizes <= 30) { prizes = 1 }
@@ -25,8 +28,6 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 				let embed = new discord.RichEmbed().setTitle("🎇").setColor("#006FEC")
 				message.channel.send({embed})
 			}, randPrizes * 100);
-
 		}
 	}
-
 }
