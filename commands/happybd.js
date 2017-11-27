@@ -8,7 +8,7 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 			userid = userid.slice(1)
 		}
 			console.log(message.author.username + " was presented a lootbox")
-			const embed = new discord.RichEmbed().setTitle('Happy Birthday 📦 '+message.author.username+' you just got a Lootbox').setColor('#07BEB8')
+			const embed = new discord.RichEmbed().setTitle('Happy Birthday 📦 <@'+userid+'> you just got a Lootbox').setColor('#07BEB8')
 			message.channel.send({embed})
 			// write into database
 			inv[userid].boxes += 1
