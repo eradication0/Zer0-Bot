@@ -36,36 +36,38 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 
 		//loop through each drop
 		for (var i = 0; i < prizes; i++) {
-			//generate random number
-			let randDrop = rand(0,100)
+			setTimeout(function () {
+				//generate random number
+				let randDrop = rand(0,100)
 
-			//define rarity
-			let rarity = 0
-			if (randDrop <= 60) {rarity = 1}
-			else if (randDrop <= 70) { rarity = 2 }
-			else if (randDrop <= 90) { rarity = 3 }
-			else if (randDrop <= 99) { rarity = 4 }
-			else if (randDrop <= 100) { rarity = 5 }
+				//define rarity
+				let rarity = 0
+				if (randDrop <= 60) {rarity = 1}
+				else if (randDrop <= 70) { rarity = 2 }
+				else if (randDrop <= 90) { rarity = 3 }
+				else if (randDrop <= 99) { rarity = 4 }
+				else if (randDrop <= 100) { rarity = 5 }
 
-			//get loot index of array
-			let dropID = rand(1,drops[rarity].items.length)
-			//subtract 1 to not get unfefined
-			dropID += -1
-			//get the value inside the array
-			let actualDrop = drops[rarity].items[dropID]
+				//get loot index of array
+				let dropID = rand(1,drops[rarity].items.length)
+				//subtract 1 to not get unfefined
+				dropID += -1
+				//get the value inside the array
+				let actualDrop = drops[rarity].items[dropID]
 
-			//timeout to slow down drops
-				//check if drop is a number aka credits
-				if (dropID <= 3) {
-					let embed = new discord.RichEmbed().setTitle("💳 " + actualDrop).setColor(drops[rarity].color)
-					inv[userid].credits += actualDrop
-					message.channel.send({embed})
+				//timeout to slow down drops
+					//check if drop is a number aka credits
+					if (dropID <= 3) {
+						let embed = new discord.RichEmbed().setTitle("💳 " + actualDrop).setColor(drops[rarity].color)
+						inv[userid].credits += actualDrop
+						message.channel.send({embed})
 
-				//if not a number just send the text
-				} else {
-					let embed = new discord.RichEmbed().setTitle(actualDrop).setColor(drops[rarity].color)
-					message.channel.send({embed})
-				}
+					//if not a number just send the text
+					} else {
+						let embed = new discord.RichEmbed().setTitle(actualDrop).setColor(drops[rarity].color)
+						message.channel.send({embed})
+					}
+			}, 300);
 		}
 		//save db
 		saveInv()
