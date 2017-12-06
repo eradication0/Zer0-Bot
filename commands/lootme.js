@@ -25,9 +25,9 @@ exports.run = function(bot, message, args, discord, settings, inv) {
 		saveInv()
 		let randPrizes = rand(0,100)
 		let prizes = 0
-		if (randPrizes <= 30) { prizes = 1 }
-		else if (randPrizes <= 50) { prizes = 2 }
-		else if (randPrizes <= 80) { prizes = 3 }
+		if (randPrizes <= 40) { prizes = 1 }
+		else if (randPrizes <= 70) { prizes = 2 }
+		else if (randPrizes <= 90) { prizes = 3 }
 		else if (randPrizes <= 99) { prizes = 4 }
 		else if (randPrizes <= 100) { prizes = 5 }
 		let embed = new discord.RichEmbed().setTitle("📦 Your lootbox contains **" + prizes + "** drops").setColor("#07BEB8")
