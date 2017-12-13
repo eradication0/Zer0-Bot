@@ -1,15 +1,15 @@
 {
 	"1":{
 		"color" : "#868686",
-		"items" : [1,2,3,4,"💩","✨ kekd","🆗🆒","1 Emote hinter 1 Name vong Benutzer her"]
+		"items" : [1,2,3,4,"💩","nothing","🆗🆒"]
 	},
 	"2":{
 		"color" : "#689674",
-		"items" : [5,6,7,8,"✨ Playing Status eines anderen Users für einen Tag ändern!"]
+		"items" : [5,6,7,8,"free air"]
 	},
 	"3":{
 		"color" : "#0066ff",
-		"items" : [10,11,12,13,"✨ Rename einen der 4 Voicechannels"]
+		"items" : [10,11,12,13]
 	},
 	"4":{
 		"color" : "#de00ff",
@@ -17,6 +17,6 @@
 	},
 	"5":{
 		"color" : "#ff9c00",
-		"items" : [100,110,120,130,"'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
+		"items" : [100,110,120,130,"✨ 'CUSTOM' Mitgliedschaft für einen Tag + Colorchange/Namechange"]
 		}
 }
