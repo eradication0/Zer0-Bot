@@ -39,7 +39,7 @@ saveInv = () => {
 }
 
 lootboxChance = (message) => {
-	let chance = rand(0,100);
+	let chance = rand(0,300);
 	// get user id
 	let userid = message.author.id
 	if (userid.startsWith("!")) {
@@ -51,8 +51,7 @@ lootboxChance = (message) => {
 		let chance = rand(0,500);
 	}
 
-	if (chance >= 10) {
-		//chance === 21 || chance === 42
+	if (chance === 21 || chance === 42) {
 		console.log(message.author.username + "won a lootbox")
 		const embed = new discord.RichEmbed().setTitle('📦 Congrats '+message.author.username+' you just got a Lootbox').setColor('#07BEB8')
 		message.channel.send({embed})
