@@ -39,19 +39,14 @@ saveInv = () => {
 }
 
 lootboxChance = (message) => {
-	let chance = rand(0,300);
+	let chance = rand(0,2000);
 	// get user id
 	let userid = message.author.id
 	if (userid.startsWith("!")) {
 		userid = userid.slice(1)
 	}
 
-	//custom drop rate for filk
-	if (userid === "73150130227781632") {
-		let chance = rand(0,500);
-	}
-
-	if (chance === 21 || chance === 42) {
+	if (chance === 42) {
 		console.log(message.author.username + "won a lootbox")
 		const embed = new discord.RichEmbed().setTitle('📦 Congrats '+message.author.username+' you just got a Lootbox').setColor('#07BEB8')
 		message.channel.send({embed})
