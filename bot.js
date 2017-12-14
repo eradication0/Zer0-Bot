@@ -39,7 +39,7 @@ saveInv = () => {
 }
 
 lootboxChance = (message) => {
-	let chance = rand(0,2000);
+	let chance = rand(0,300);
 	// get user id
 	let userid = message.author.id
 	if (userid.startsWith("!")) {
